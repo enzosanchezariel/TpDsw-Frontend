@@ -1,24 +1,19 @@
-import { Component, Input} from '@angular/core';
-
-import { CommonModule } from '@angular/common';
-
-import { MatCardModule } from '@angular/material/card';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
+import { Component, Input } from '@angular/core';
 
 type CardContent = {
   id: Number;
-  name: string;
+  desc: string;
+  price: Number;
   imageUrl: string;
 };
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatToolbarModule, MatButtonModule],
+  imports: [],
   templateUrl: './product-card.component.html',
-  styleUrl: './product-card.component.css'
+  styleUrl: './product-card.component.scss'
 })
-export class ProductCardComponent{
+export class ProductCardComponent {
   @Input() cardInput!: CardContent;
 }

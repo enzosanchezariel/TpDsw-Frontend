@@ -1,0 +1,44 @@
+.myHeader{
+    background-color: #1E0820;
+}
+.mySections{
+    display: inline-flex
+}
+.item{
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+    border-right: 1px solid #000;
+}
+.img{
+    height: 52px;
+}
+
+.category-wrapper{
+    background-color: #2D0F33;
+    overflow-x: auto;
+    scrollbar-width: none;
+    display: flex;
+}
+
+@keyframes detect-scroll {
+    from, to { --can-scroll: ; }
+}
+
+.justify-evenly-until-scroll {
+    --start-if-can-scroll: var(--can-scroll) start;
+    justify-content: var(
+      --start-if-can-scroll, space-evenly
+    );
+    animation: detect-scroll linear;
+    animation-timeline: scroll(self inline);
+}
+
+.category-list{
+    gap: 0.75rem;
+    display: flex;
+    padding: 0.5rem;
+}
+
+.category-button{
+    padding: 0.2rem 0.5rem 0.2rem;
+}

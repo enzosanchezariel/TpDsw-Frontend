@@ -1,0 +1,45 @@
+article {
+    width: 100%;
+    border: 1px solid grey;
+    box-shadow: none;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+article footer{
+    border-top-color: grey;
+}
+
+.img-area {
+	position: relative;
+	width: 100%;
+	height: 200px;
+	overflow: hidden;
+}
+.img-area img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+article footer .desc{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+            line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+
+article footer .price{
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+    color: #2D0F33;
+    font-weight: bold;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

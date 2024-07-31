@@ -1,25 +1,22 @@
-import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
-
+import { Component, signal, Signal } from '@angular/core';
+import {CommonModule} from '@angular/common'
 import { ProductCardComponent } from "../product-card/product-card.component";
-
-import { MatCardModule } from '@angular/material/card';
 
 type CardContent = {
   id: Number;
-  name: string;
+  desc: string;
+  price: Number;
   imageUrl: string;
 };
 
 @Component({
-    selector: 'app-product-grid',
-    standalone: true,
-    templateUrl: './product-grid.component.html',
-    styleUrl: './product-grid.component.css',
-    imports: [ProductCardComponent, CommonModule, MatCardModule]
+  selector: 'app-product-grid',
+  standalone: true,
+  imports: [ProductCardComponent, CommonModule],
+  templateUrl: './product-grid.component.html',
+  styleUrl: './product-grid.component.scss'
 })
-
-export class ProductGridComponent{
+export class ProductGridComponent {
   cards = signal<CardContent[]>([]);
 
   names = [
@@ -34,8 +31,9 @@ export class ProductGridComponent{
     for (let i = 0; i < this.names.length; i++) {
       cards.push({
         id: i,
-        name: this.names[i],
+        desc: this.names[i],
         imageUrl: "https://picsum.photos/200",
+        price: 200
       });
     }
 

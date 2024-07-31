@@ -1,5 +1,5 @@
 <div class="responsive-grid">
-    <mat-card appearance="outlined" *ngFor="let card of cards()">
+    <div *ngFor="let card of cards()">
         <app-product-card [cardInput] = "card"></app-product-card>
-    </mat-card>
+    </div>
 </div>
