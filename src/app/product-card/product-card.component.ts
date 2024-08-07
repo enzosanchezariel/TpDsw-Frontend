@@ -1,4 +1,6 @@
+import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 type CardContent = {
   id: Number;
@@ -10,7 +12,7 @@ type CardContent = {
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss'
 })
