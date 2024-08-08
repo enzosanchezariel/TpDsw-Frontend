@@ -1,11 +1,11 @@
 <a [routerLink]="['/productdetails', cardInput.id]" routerLinkActive="active" ariaCurrentWhenActive="page">
-    <article>
+    <div class="card">
         <div class="img-area">
             <img [src]="cardInput.imageUrl"/>
         </div>
-        <footer>
+        <div class="details">
             <strong class="desc">{{cardInput.desc}}</strong>
             <p class="price">${{cardInput.price}}</p>
-        </footer>
-    </article>
+        </div>
+    </div>
 </a>

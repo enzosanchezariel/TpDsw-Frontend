@@ -1,6 +1,14 @@
 .container {
     margin-top: 2rem;
 }
+
+.card {
+    border: 1px solid lightgray;
+    border-radius: 0.4rem;
+    overflow: hidden;
+    padding: 2rem;
+}
+
 .product-details {
     display: flex;
     flex-direction: column;
@@ -45,6 +53,10 @@ input {
     align-self: flex-start;
 }
 
+h3 {
+    margin: 0;
+}
+
 .side-to-side {
     align-items: center;
     display: flex;
@@ -55,7 +67,14 @@ input {
     display: none;
 }
 
-@media (min-width: 768px) {
+button {
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+@media (min-width: 576px) {
     .top-title {
         display: none;
     }
@@ -70,6 +89,8 @@ input {
 
     .product-info {
         justify-content: flex-start;
+        border-left: 1px solid lightgray;
+        padding-left: 1rem;
     }
 
     .add-to-cart {

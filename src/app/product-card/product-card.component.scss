@@ -1,8 +1,11 @@
-article {
+.card {
     width: 100%;
-    border: 1px solid grey;
+    border: 1px solid lightgray;
     box-shadow: none;
     margin: 0;
+    padding: 0;
+    border-radius: 0.4rem;
+    overflow: hidden;
 }
 
 a {
@@ -25,7 +28,11 @@ article footer{
 	object-fit: cover;
 }
 
-article footer .desc{
+.details {
+    padding: 0.5rem;
+}
+
+.card .details .desc{
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
@@ -34,7 +41,7 @@ article footer .desc{
     -webkit-box-orient: vertical;
 }
 
-article footer .price{
+.card .details .price{
     margin-top: 0.5rem;
     margin-bottom: 0;
     color: #2D0F33;
