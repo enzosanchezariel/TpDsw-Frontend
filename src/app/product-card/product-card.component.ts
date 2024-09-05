@@ -1,13 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
-
-type CardContent = {
-  id: Number;
-  desc: string;
-  price: Number;
-  imageUrl: string;
-};
+import { Product } from '../../entities/product.entity';
 
 @Component({
   selector: 'app-product-card',
@@ -17,5 +11,5 @@ type CardContent = {
   styleUrl: './product-card.component.scss'
 })
 export class ProductCardComponent {
-  @Input() cardInput!: CardContent;
+  @Input() cardInput!: Product;
 }

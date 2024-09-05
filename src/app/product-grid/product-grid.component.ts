@@ -1,13 +1,9 @@
 import { Component, signal, Signal } from '@angular/core';
 import {CommonModule} from '@angular/common'
 import { ProductCardComponent } from "../product-card/product-card.component";
+import { Product } from '../../entities/product.entity';
+import { ProductsService } from '../products.service';
 
-type CardContent = {
-  id: Number;
-  desc: string;
-  price: Number;
-  imageUrl: string;
-};
 
 @Component({
   selector: 'app-product-grid',
@@ -17,26 +13,17 @@ type CardContent = {
   styleUrl: './product-grid.component.scss'
 })
 export class ProductGridComponent {
-  cards = signal<CardContent[]>([]);
 
-  names = [
-    "Mayonesa", "Mostaza", "Café", "Cinta", "Escoba",
-    "Costillar", "Fideos", "Coca-Cola", "Pepsi", "Bolsas de basura", 
-    "Guantes", "Papel higienico", "Lavandina", "Shampoo", "Jabón", 
-    "Vino", "Gel", "Rollos de cocina", "Maquina de afeitar", "Pilas AA", 
-  ];
+  cards: Product[] = [];
 
-  constructor() {
-    const cards: CardContent[] = [];
-    for (let i = 0; i < this.names.length; i++) {
-      cards.push({
-        id: i,
-        desc: this.names[i],
-        imageUrl: "https://picsum.photos/200",
-        price: 200
-      });
-    }
+  constructor(private service: ProductsService) {}
 
-    this.cards.set(cards);
+  ngOnInit(): void {
+    this.loadProducts()
+  }
+
+  loadProducts() {
+    this.service.getAllProducts().subscribe((response) => this.cards = response.data)
+    console.log(this.cards)
   }
 }

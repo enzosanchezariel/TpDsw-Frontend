@@ -1,10 +1,10 @@
 <a [routerLink]="['/productdetails', cardInput.id]" routerLinkActive="active" ariaCurrentWhenActive="page">
     <div class="card">
         <div class="img-area">
-            <img [src]="cardInput.imageUrl"/>
+            <img [src]="cardInput.img"/>
         </div>
         <div class="details">
-            <strong class="desc">{{cardInput.desc}}</strong>
+            <strong class="name">{{cardInput.name}}</strong>
             <p class="price">${{cardInput.price}}</p>
         </div>
     </div>
