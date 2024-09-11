@@ -6,6 +6,7 @@
     padding: 0;
     border-radius: 0.4rem;
     overflow: hidden;
+    transition: all 0.3s ease;
 }
 
 a {
@@ -32,13 +33,18 @@ article footer{
     padding: 0.5rem;
 }
 
-.card .details .name{
+.card .details .name {
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
+    -webkit-line-clamp: 1;
+            line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+.card:hover .details .name {
     -webkit-line-clamp: 2;
             line-clamp: 2;
-    -webkit-box-orient: vertical;
 }
 
 .card .details .price{

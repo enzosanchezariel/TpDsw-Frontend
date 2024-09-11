@@ -15,4 +15,9 @@ export class ProductsService {
     const url = this.baseUrl + 'products';
     return this.http.get<any>(url);
   }
+
+  getOneProduct(id: string) {
+    const url = this.baseUrl + 'products/' + id;
+    return this.http.get<any>(url);
+  }
 }

@@ -24,6 +24,5 @@ export class ProductGridComponent {
 
   loadProducts() {
     this.service.getAllProducts().subscribe((response) => this.cards = response.data)
-    console.log(this.cards)
   }
 }
