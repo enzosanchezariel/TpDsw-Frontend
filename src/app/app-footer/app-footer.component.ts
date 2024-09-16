@@ -4,13 +4,12 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthComponent } from "../auth/auth.component";
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-footer',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive, AuthComponent],
-  templateUrl: './app-header.component.html',
-  styleUrl: './app-header.component.scss'
+  templateUrl: './app-footer.component.html',
+  styleUrl: './app-footer.component.scss'
 })
-export class AppHeaderComponent {
+export class AppFooterComponent {
 isLoginFormOpen: any;
-
 }

@@ -1,0 +1,157 @@
+.supermarket-footer {
+  background-color: #f8f8f8;
+  color: #333;
+  padding: 1.5rem 0 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  .footer-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 1rem;
+  }
+
+  .footer-section {
+    flex: 1;
+    min-width: 150px;
+    margin-bottom: 1rem;
+    padding: 0 1rem;
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+      font-size: 0.9rem;
+      margin-bottom: 0.6rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    p,
+    ul li {
+      font-size: 0.8rem;
+      line-height: 1.4;
+      margin-bottom: 0.2rem;
+      text-align: justify;
+    }
+
+    ul.footer__links {
+      list-style: none; // Elimina el estilo de lista
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center; // Centra los elementos en la lista
+      justify-content: center;
+      gap: 0.3rem; // Espaciado entre los enlaces
+
+      li.links__link {
+        margin-bottom: 0.2rem;
+        list-style:none;
+
+        a {
+          font-size: 0.85rem; // Reduce el tamaño del texto de los enlaces
+          color: #333;
+          text-decoration: none;
+          transition: color 0.3s ease;
+
+          &:hover {
+            color: #007bff;
+          }
+        }
+      }
+    }
+  }
+
+  .social-icons {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    justify-content: center;
+
+    .social-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #333;
+      color: #fff;
+      text-decoration: none;
+      transition: background-color 0.3s ease;
+      font-size: 0.8rem;
+
+      &:hover {
+        background-color: #007bff;
+      }
+    }
+  }
+
+  .footer-bottom {
+    background-color: #e8e8e8;
+    text-align: center;
+    padding: 0.5rem 0;
+    margin-top: auto;
+    width: 100%;
+
+    p {
+      font-size: 0.75rem;
+      margin: 0;
+    }
+  }
+
+  // Media queries para hacer el footer responsive
+
+  @media screen and (max-width: 1023px) {
+    .footer-container {
+      flex-wrap: wrap;
+    }
+
+    .footer-section {
+      flex-basis: calc(50% - 1rem);
+      min-width: 0;
+    }
+
+    .supermarket-footer {
+      position: relative;
+      bottom: 0;
+      width: 100%;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .footer-container {
+      flex-direction: column;
+      padding: 0 1rem 1rem;
+    }
+
+    .footer-section {
+      flex-basis: 100%;
+      padding: 0;
+      margin-bottom: 1rem;
+
+      h3 {
+        font-size: 1rem;
+      }
+
+      p,
+      ul li {
+        font-size: 0.9rem;
+      }
+    }
+
+    .social-icons {
+      justify-content: center;
+    }
+
+    .footer-bottom {
+      padding: 0.5rem 0;
+    }
+  }
+}
