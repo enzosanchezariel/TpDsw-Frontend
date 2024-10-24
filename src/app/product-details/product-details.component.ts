@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ProductsService } from '../products.service';
+import { ProductsService } from '../services/products.service';
 import { Product } from '../../entities/product.entity';
 import { FormsModule } from '@angular/forms';
 import { Price } from '../../entities/price.entity';
+import { Category } from '../../entities/category.entity.js';
+import { Discount } from '../../entities/discount.entity.js';
 
 @Component({
   selector: 'app-product-details',
@@ -19,8 +21,7 @@ export class ProductDetailsComponent {
   total : number = 0;
 
   id : string | null = null;
-  product: Product = new Product(0, '', '', [new Price(new Date(), 0)], '', 0, {}, {});
-  
+  product: Product = new Product(0, '', '', [new Price(new Date(), 0)], '', 0, new Category(0, ''), 0);  
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => this.id = params.get('id'));
     if (this.id !== null) {

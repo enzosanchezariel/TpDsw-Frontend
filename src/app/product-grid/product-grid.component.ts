@@ -2,7 +2,7 @@ import { Component, signal, Signal } from '@angular/core';
 import {CommonModule} from '@angular/common'
 import { ProductCardComponent } from "../product-card/product-card.component";
 import { Product } from '../../entities/product.entity';
-import { ProductsService } from '../products.service';
+import { ProductsService } from '../services/products.service';
 
 
 @Component({

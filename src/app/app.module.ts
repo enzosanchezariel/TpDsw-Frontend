@@ -1,43 +1,42 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms'; // Importa ReactiveFormsModule
-import { AppRoutingModule } from './app.routes.js';  // Importar el módulo de rutas
-import { FormsModule } from '@angular/forms'; // Importa FormsModule
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { AppRoutingModule } from './app.routes';  // Importar el módulo de rutas
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule, Routes } from '@angular/router';
 
-// Ensure AppRoutingModule is correctly defined and exported in app-routing.module.ts
+// Importa tus componentes
 import { AppComponent } from './app.component';
 import { AuthComponent } from './auth/auth.component'; // Importa AuthComponent
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component.js';
+import { ProductCreateComponent } from './product-create/product-create.component'; // Asegúrate de importar el ProductCreateComponent
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
+  { path: 'create-product', component: ProductCreateComponent }, // Asegúrate de agregar la ruta para el ProductCreateComponent
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' } // Ruta por defecto
 ];
-
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,  // Declarar el componente de login
-    // AuthComponent // Declarar AuthComponent aquí
-    RegisterComponent
+    RegisterComponent,
+    ProductCreateComponent,
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     ReactiveFormsModule, // Añade ReactiveFormsModule aquí
-    AppRoutingModule,  // Importar las rutas
-    AuthComponent, // Importar AuthComponent aquí
-    FormsModule, // Añade FormsModule aquí
     HttpClientModule,
-    RouterModule.forRoot(routes)
-  ],
-  exports: [RouterModule],
+    RouterModule.forRoot(routes),
+    AppRoutingModule, // Importar las rutas
+    AuthComponent
+],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

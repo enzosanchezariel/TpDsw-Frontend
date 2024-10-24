@@ -7,5 +7,5 @@ import { AppModule } from './app/app.module';
 bootstrapApplication(AppMainComponent, appConfig)
   .catch((err) => console.error(err));
 
-  platformBrowserDynamic().bootstrapModule(AppModule)
+platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));
