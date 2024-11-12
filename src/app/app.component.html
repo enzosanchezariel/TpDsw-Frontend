@@ -1,0 +1,10 @@
+<app-auth></app-auth> <!-- Asegúrate de que el selector del componente AuthComponent esté aquí -->
+<form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+  <label for="username">Username:</label>
+  <input id="username" formControlName="username">
+
+  <label for="password">Password:</label>
+  <input id="password" type="password" formControlName="password">
+
+  <button type="submit">Submit</button>
+</form>

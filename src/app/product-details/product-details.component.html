@@ -1,0 +1,44 @@
+<div class="container">
+    <h1 class="top-title">{{product.name}}</h1>
+    <div class="card">
+        <!-- Botón de eliminación en la esquina superior derecha -->
+        <button class="delete-product" (click)="confirmDelete()">
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24"
+                viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff0000" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M4 7h16" />
+                <path d="M10 11v6" />
+                <path d="M14 11v6" />
+                <path d="M5 7l1 -4h12l1 4" />
+                <path d="M6 7v13a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2v-13" />
+            </svg>
+        </button>
+
+        <div class="product-details">
+            <div class="product-image">
+                <img [src]="product.img" alt="Product Image">
+            </div>
+            <div class="product-info">
+                <div class="info">
+                    <h1 class="inner-title">{{product.name}}</h1>
+                    <h2>${{product.prices.at(-1)?.price}}</h2>
+                    <p>{{product.desc}}</p>
+                </div>
+                <strong>Cantidad de unidades:</strong>
+                <input [(ngModel)]="amount" name="amount" type="number" placeholder="1" min="0" />
+                <div class="side-to-side">
+                    <div>
+                        <strong>Total:</strong>
+                        <h3>{{1 + 1}}</h3>
+                    </div>
+                    <div class="button-group">
+                        <button class="add-to-cart">Añadir al carrito</button>
+                        <button *ngIf="canViewEmployee" [routerLink]="['/edit-product', product.id]"
+                            class="edit-product">Modificar Producto</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

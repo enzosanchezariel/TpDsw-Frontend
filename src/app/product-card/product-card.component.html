@@ -1,0 +1,12 @@
+<a [routerLink]="['/productdetails', cardInput.id]" routerLinkActive="active" ariaCurrentWhenActive="page">
+    <div class="card">
+        <div class="img-area">
+            <img [src]="cardInput.img" [alt]="cardInput.name" />
+        </div>
+        <div class="details">
+            <strong class="name">{{ cardInput.name }}</strong>
+            <p class="price">${{ cardInput.prices.at(-1)?.price }}</p>
+            <!-- No muestra el ultimo precio, sino el anterior -->
+        </div>
+    </div>
+</a>

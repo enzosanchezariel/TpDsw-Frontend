@@ -1,0 +1,107 @@
+.product-form {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    color: #4a0e4e;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+
+      label {
+        margin-bottom: 5px;
+        color: #4a0e4e;
+        font-weight: bold;
+      }
+
+      input,
+      textarea,
+      select {
+        padding: 10px;
+        /* Ajuste estándar */
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 16px;
+        width: 100%;
+        /* Se asegura que el input/select ocupe todo el espacio disponible */
+
+        &:focus {
+          outline: none;
+          border-color: #8e44ad;
+          box-shadow: 0 0 0 2px rgba(142, 68, 173, 0.2);
+          /* Diagnóstico: Puedes eliminarlo temporalmente */
+        }
+      }
+
+      select {
+        min-height: 40px;
+        /* Altura mínima para que las opciones se vean mejor */
+        appearance: none;
+        /* Elimina el estilo por defecto del select para navegadores como Firefox */
+      }
+
+      textarea {
+        min-height: 100px;
+        resize: vertical;
+      }
+    }
+
+    .button {
+      background-color: #8e44ad;
+      color: white;
+      padding: 12px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+
+      &:hover {
+        background-color: #6c3483;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .product-form {
+    padding: 15px;
+
+    form {
+      gap: 10px;
+
+      .form-group {
+
+        input,
+        textarea,
+        select {
+          font-size: 14px;
+          /* Tamaño ajustado para móviles */
+        }
+
+        select {
+          min-height: 35px;
+          /* Ajuste adicional para mejorar la usabilidad en pantallas pequeñas */
+        }
+      }
+
+      .button {
+        padding: 10px;
+        font-size: 14px;
+      }
+    }
+  }
+}

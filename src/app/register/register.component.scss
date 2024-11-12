@@ -1,0 +1,169 @@
+// Variables
+$primary-color: #4CAF50;
+$secondary-color: #45a049;
+$background-color: #f2f2f2;
+$text-color: #333;
+$error-color: #f44336;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Estilos globales
+body {
+  font-family: Arial, sans-serif;
+  background-color: $background-color;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  @include flex-center;
+}
+
+// Contenedor del registro
+.register-container {
+  margin: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  width: 100%;
+  max-width: 550px;
+}
+
+// Formulario de registro
+.register-form {
+  h2 {
+    text-align: center;
+    color: $text-color;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: $text-color;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+      }
+    }
+  }
+
+  // Estilos de validación
+  input:invalid {
+    border-color: $error-color;
+  }
+
+  input:valid {
+    border-color: $primary-color;
+  }
+
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: $primary-color;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: $secondary-color;
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      /* Color para el botón deshabilitado */
+      cursor: not-allowed;
+      /* Cambia el cursor para indicar que está deshabilitado */
+    }
+  }
+
+  .form-footer {
+    margin-top: 1rem;
+    text-align: center;
+
+    p {
+      font-size: 0.9rem;
+      color: $text-color;
+    }
+
+    a {
+      color: $primary-color;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+// Estilos de mensajes de error
+.error-message {
+  color: red;
+  /* O el color que prefieras */
+  font-size: 0.875rem;
+  /* Tamaño más pequeño */
+  margin-top: 0.25rem;
+  /* Espacio superior */
+}
+
+// Sección de términos
+.terms-section {
+  text-align: center;
+  margin-top: 1rem;
+
+  p {
+    margin: 0.5rem 0;
+  }
+
+  a {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  .terms {
+    font-size: 0.75rem;
+    /* Tamaño pequeño para términos y condiciones */
+    color: #6c757d;
+    /* Color más claro */
+    margin-top: 1rem;
+    line-height: 1.5;
+  }
+}
+
+// Responsive
+@media (max-width: 480px) {
+  .register-container {
+    padding: 1rem;
+  }
+
+  .register-form {
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    button {
+      font-size: 0.9rem;
+    }
+  }
+}

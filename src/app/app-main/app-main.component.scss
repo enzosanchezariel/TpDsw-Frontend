@@ -1,0 +1,4 @@
+main {
+  flex: 1 0 auto; // Se expande para ocupar el espacio restante
+  min-height: calc(100vh - 150px); // Ajusta según la altura de tu header y footer
+}

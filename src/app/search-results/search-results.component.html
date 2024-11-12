@@ -1,0 +1,11 @@
+<div class="container">
+  <section></section>
+  <h1>Resultados de la búsqueda</h1>
+  <div *ngIf="searchResults.length > 0">
+    <app-product-grid [cards]="searchResults"></app-product-grid>
+  </div>
+
+  <div *ngIf="searchResults.length === 0">
+    No se encontraron productos.
+  </div>
+</div>

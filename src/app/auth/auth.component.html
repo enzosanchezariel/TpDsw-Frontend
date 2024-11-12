@@ -1,0 +1,31 @@
+<!-- auth.component.html -->
+<div class="auth-form">
+  <h2>Login</h2>
+  <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+    <label for="username">Username</label>
+    <input id="username" formControlName="username" required>
+
+    <label for="password">Password</label>
+    <input id="password" type="password" formControlName="password" required>
+
+    <button type="submit">Login</button>
+  </form>
+
+  <div class="switch-form">
+    <p>Don't have an account? <a href="#" (click)="toggleSignUp()">Sign Up</a></p>
+  </div>
+
+  <!-- Opcional: Sección de registro si el usuario cambia -->
+  <div *ngIf="isSignUp">
+    <h2>Sign Up</h2>
+    <form [formGroup]="signUpForm" (ngSubmit)="onSignUp()">
+      <label for="username">Username</label>
+      <input id="username" formControlName="username" required>
+
+      <label for="password">Password</label>
+      <input id="password" type="password" formControlName="password" required>
+
+      <button type="submit">Sign Up</button>
+    </form>
+  </div>
+</div>

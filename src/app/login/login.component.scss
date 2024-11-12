@@ -1,0 +1,134 @@
+// Variables
+$primary-color: #3498db;
+$secondary-color: #2980b9;
+$background-color: #ecf0f1;
+$text-color: #333;
+
+// Mixins
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Global styles
+body {
+  font-family: Arial, sans-serif;
+  background-color: $background-color;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  @include flex-center;
+}
+
+// Login container
+.login-container {
+  margin: auto;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+}
+
+// Login form
+.login-form {
+  h2 {
+    text-align: center;
+    color: $text-color;
+    margin-bottom: 1.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      color: $text-color;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1rem;
+
+      &:focus {
+        outline: none;
+        border-color: $primary-color;
+      }
+    }
+  }
+
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    background-color: $primary-color;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+      background-color: $secondary-color;
+    }
+  }
+
+  // Estilo para el footer del formulario
+  .form-footer {
+    text-align: center;
+    margin-top: 0.35rem;
+
+    p {
+      margin: 0.5rem 0;
+      font-size: 0.85rem;
+      /* Tamaño adecuado al diseño */
+
+      // Estilo del checkbox y texto "Recordarme"
+      .remember-me {
+        display: flex;
+        align-items: center;
+        /* Centrar verticalmente */
+        justify-content: center;
+        /* Alinear al centro si es necesario */
+        margin-top: 1rem;
+        /* Espacio superior para separación */
+
+        input[type="checkbox"] {
+          margin-right: 0.5rem;
+          /* Espacio entre el checkbox y el texto */
+          transform: scale(0.8);
+          /* Reducir tamaño del checkbox */
+        }
+
+        label {
+          font-size: 0.9rem;
+          /* Tamaño del texto */
+          color: $text-color;
+          /* Asegurar que el color sea el correcto */
+        }
+      }
+    }
+
+    a {
+      color: $secondary-color;
+      /* Color verde similar al botón de la imagen */
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    p a {
+      color: #007bff;
+      /* Color azul para los enlaces adicionales */
+    }
+  }
+}

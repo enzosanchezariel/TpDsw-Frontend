@@ -1,0 +1,12 @@
+<div class="container">
+  <section></section>
+  <h1 *ngIf="categoryName !== ''">Productos de {{categoryName}}</h1>
+  <h1 *ngIf="categoryName === ''">Productos de categoría invalida</h1>
+  <div *ngIf="categoryResults.length > 0">
+    <app-product-grid [cards]="categoryResults"></app-product-grid>
+  </div>
+
+  <div *ngIf="categoryResults.length === 0 || categoryName === ''">
+    No se encontraron productos.
+  </div>
+</div>

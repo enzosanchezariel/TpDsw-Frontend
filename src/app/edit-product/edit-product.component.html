@@ -1,0 +1,27 @@
+<div class="container">
+  <h1>Modificar Producto</h1>
+  <form [formGroup]="productForm" (ngSubmit)="updateProduct()">
+    <div>
+      <label for="name">Nombre:</label>
+      <input type="text" id="name" formControlName="name" />
+    </div>
+
+    <div>
+      <label for="desc">Descripción:</label>
+      <textarea id="desc" formControlName="desc"></textarea>
+    </div>
+
+    <div>
+      <label for="price">Precio:</label>
+      <input type="number" id="price" formControlName="prices" />
+    </div>
+
+    <div>
+      <label for="img">Imagen:</label>
+      <input type="text" id="img" formControlName="img" />
+    </div>
+
+    <button type="submit">Modificar Producto</button>
+    <button type="button" (click)="cancel()">Cancelar</button>
+  </form>
+</div>

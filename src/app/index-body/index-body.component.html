@@ -1,0 +1,12 @@
+<div class="container">
+    <section></section>
+    <section>
+        <h1>Productos</h1>
+        <app-product-grid [cards]="cards"></app-product-grid>
+    </section>
+    <section *ngIf="canViewEmployee">
+        <button class="create-product-btn" [routerLink]="['/create-product']">
+            Crear Nuevo Producto
+        </button>
+    </section>
+</div>
