@@ -10,7 +10,7 @@ export class Product {
     public stock: number;
     public prices: Price[] = [];
     public category: Category; 
-    public discount_id: number = 0 ; 
+    public discount: Discount; 
 
     constructor(
         id: number, 
@@ -20,7 +20,7 @@ export class Product {
         img: string, 
         stock: number, 
         category: Category, 
-        discount_id: number,
+        discount: Discount,
     ) {
         this.id = id;
         this.name = name;
@@ -29,6 +29,6 @@ export class Product {
         this.stock = stock;
         this.prices = prices;
         this.category = category;
-        this.discount_id = discount_id;
+        this.discount = discount;
     }
 }

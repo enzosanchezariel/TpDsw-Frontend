@@ -50,7 +50,7 @@ export class EditProductComponent implements OnInit {
           stock: this.originalProduct?.stock,
           prices: lastPrice,
           category: this.originalProduct?.category?.id,
-          discount_id: this.originalProduct?.discount_id || null // Si tiene descuento, lo muestra, si no, null
+          discount_id: this.originalProduct?.discount.id || null // Si tiene descuento, lo muestra, si no, null
         });
         console.log('Producto original:', this.originalProduct);
       });

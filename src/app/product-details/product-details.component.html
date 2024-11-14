@@ -1,5 +1,5 @@
 <div class="container">
-    <h1 class="top-title">{{product.name}}</h1>
+    <h1 class="top-title">{{ product.name }}</h1>
     <div class="card">
         <!-- Botón de eliminación en la esquina superior derecha -->
         <button *ngIf="canViewAdmin" class="delete-product" (click)="confirmDelete()">
@@ -21,16 +21,46 @@
             </div>
             <div class="product-info">
                 <div class="info">
-                    <h1 class="inner-title">{{product.name}}</h1>
-                    <h2>${{product.prices.at(0)?.price}}</h2>
-                    <p>{{product.desc}}</p>
+                    <h1 class="inner-title">{{ product.name }}</h1>
+                    <h2>
+                        <!-- Mostrar precio según si tiene descuento o no -->
+                        <ng-container>
+                            <span>
+                                ${{ product.prices.at(0)?.price }}
+                            </span>
+                        </ng-container>
+                        <ng-template #noDiscount>
+                            ${{ product.prices.at(0)?.price }}
+                        </ng-template>
+                    </h2>
+                    <p *ngIf="product.discount && product.discount.percentage">
+                        <strong>
+                            {{ product.discount.percentage }}% de descuento comprando más de
+                            {{ product.discount.units }} unidades.
+                        </strong>
+                    </p>
+                    <p>{{ product.desc }}</p>
                 </div>
                 <strong>Cantidad de unidades:</strong>
                 <input [(ngModel)]="amount" name="amount" type="number" placeholder="1" min="0" />
                 <div class="side-to-side">
                     <div>
                         <strong>Total:</strong>
-                        <h3>{{1 + 1}}</h3>
+                        <span *ngIf="product.discount">
+                            <h3>
+                                <span *ngIf="amount >= product.discount.units" style="text-decoration: line-through;">
+                                    ${{ originalTotal() }}
+                                </span>
+                                <span>${{ calculateTotal() }}</span>
+                            </h3>
+                        </span>
+                        <span *ngIf="!product.discount">
+                            <h3>
+                                <span>
+                                    ${{ calculateTotal() }}
+                                </span>
+                            </h3>
+                        </span>
                     </div>
                     <div class="button-group">
                         <button class="add-to-cart">Añadir al carrito</button>

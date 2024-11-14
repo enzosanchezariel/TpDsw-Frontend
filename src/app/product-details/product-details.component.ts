@@ -21,7 +21,7 @@ export class ProductDetailsComponent {
   amount: number = 0;
   total: number = 0;
   id: string | null = null;
-  product: Product = new Product(0, '', '', [new Price(new Date(), 0)], '', 0, new Category(0, ''), 0);  
+  product: Product = new Product(0, '', '', [new Price(new Date(), 0)], '', 0, new Category(0, ''), new Discount(0, 0, 0));  
   canViewEmployee: boolean = false;
   canViewAdmin: boolean = false;
 
@@ -53,16 +53,40 @@ export class ProductDetailsComponent {
   }
 
   deleteProduct(): void {
-  this.service.deleteProduct(this.product.id.toString()).subscribe(
-    () => {
-      alert('Producto eliminado exitosamente.');
-      this.router.navigate(['/products']);
-    },
-    (error) => {
-      console.error('Error al eliminar el producto:', error);
-      alert('Ocurrió un error al eliminar el producto.');
-    }
-  );
-}
+    this.service.deleteProduct(this.product.id.toString()).subscribe(
+      () => {
+        alert('Producto eliminado exitosamente.');
+        this.router.navigate(['/products']);
+      },
+      (error) => {
+        console.error('Error al eliminar el producto:', error);
+        alert('Ocurrió un error al eliminar el producto.');
+      }
+    );
+  }
 
+  // Calcula el total, considerando el descuento solo si se cumplen las condiciones
+  calculateTotal(): number {
+    const price = this.product.prices.at(0)?.price ?? 0;
+    const discount = this.product.discount?.percentage ?? 0;
+    
+    // Si el producto tiene descuento y se cumple el requisito de unidades
+    if (this.product.discount && this.product.discount.units > 0 && this.amount >= this.product.discount.units) {
+      const discountPrice = price * (1 - discount / 100);
+      const discountedUnits = Math.floor(this.amount / this.product.discount.units) * this.product.discount.units;
+      const regularUnits = this.amount % this.product.discount.units;
+
+      // Total con el descuento aplicado a las unidades que cumplen el requisito
+      return discountedUnits * discountPrice + regularUnits * price;
+    }
+
+    // Si no hay descuento, devolver el total sin descuento
+    return this.amount * price;
+  }
+
+  // Calcula el total original sin aplicar descuentos
+  originalTotal(): number {
+    const price = this.product.prices.at(0)?.price ?? 0;
+    return price * this.amount;
+  }
 }

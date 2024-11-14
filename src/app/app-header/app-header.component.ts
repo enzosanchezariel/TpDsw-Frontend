@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';  // For ngModel binding
 import { CommonModule } from '@angular/common';  // For ngIf, ngFor, etc.
@@ -8,7 +8,8 @@ import { ProductsService } from '../services/products.service';
 import { Product } from '../../entities/product.entity';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../../entities/category.entity';
-import { User } from '../../entities/user.entity.js';
+import { User } from '../../entities/user.entity';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -17,17 +18,21 @@ import { User } from '../../entities/user.entity.js';
   templateUrl: './app-header.component.html',
   styleUrls: ['./app-header.component.scss']
 })
-export class AppHeaderComponent implements OnInit {
-  userEmail: string = '';
+export class AppHeaderComponent implements OnInit, OnDestroy {
+  userEmail: string | null = null;
   isSettingsMenuVisible: boolean = false;
   isCategoriesOpen: boolean = false;
   showSearch: boolean = false;
   searchQuery: string = '';
   isLoggedIn: boolean = false;
   canViewAdmin: boolean = false;
+  canViewEmployee: boolean = false;
   user: User = new User(0, '', '', '', '', '', '', '', ''); 
 
   categories: Category[] = [];
+
+  private authStatusSub: Subscription | undefined;
+  private roleSub: Subscription | undefined;
 
   constructor(
     private authService: AuthService,
@@ -37,9 +42,29 @@ export class AppHeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isLoggedIn = this.authService.isAuthenticated();
-    this.canViewAdmin = this.authService.getRole() === 'admin';
-    this.categoryService.getCategories().subscribe((response) => this.categories = response.data)
+    // Suscribirse a los cambios de autenticación y rol reactivos
+    this.authStatusSub = this.authService.isAuthenticated$.subscribe(isAuthenticated => {
+      this.isLoggedIn = isAuthenticated;
+    });
+
+    this.roleSub = this.authService.userRole$.subscribe(role => {
+      this.canViewAdmin = role === 'admin';
+      this.canViewEmployee = role === 'employee';
+      this.userEmail = this.authService.getUserEmail();
+    });
+
+    // Obtener las categorías del servicio
+    this.categoryService.getCategories().subscribe((response) => this.categories = response.data);
+  }
+
+  ngOnDestroy(): void {
+    // Limpiar las suscripciones al destruir el componente
+    if (this.authStatusSub) {
+      this.authStatusSub.unsubscribe();
+    }
+    if (this.roleSub) {
+      this.roleSub.unsubscribe();
+    }
   }
 
   toggleSettingsMenu(): void {
@@ -76,7 +101,6 @@ export class AppHeaderComponent implements OnInit {
 
   logout(): void {
     this.authService.logout();
-    this.isLoggedIn = this.authService.isAuthenticated();
     alert('Sesión cerrada');
   }
 }

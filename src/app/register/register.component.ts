@@ -16,13 +16,19 @@ export class RegisterComponent {
     email: '',
     phone: '',
     address: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   };
 
   constructor(private http: HttpClient, private router: Router) {}
 
   onSubmit() {
-    if (this.registerData.dni && this.registerData.name && this.registerData.last_name && this.registerData.email && this.registerData.password) {
+    if (this.registerData.password !== this.registerData.confirmPassword) {
+      console.error('Las contraseñas no coinciden');
+      return; 
+    }
+
+    if (this.registerData.dni && this.registerData.name && this.registerData.last_name && this.registerData.email && this.registerData.password && this.registerData.confirmPassword) {
       this.http.post('http://localhost:3000/api/users', this.registerData).subscribe(
         response => {
           console.log('Registro exitoso', response);
@@ -32,6 +38,8 @@ export class RegisterComponent {
           console.error('Error en el registro', error);
         }
       );
+    } else {
+      console.error('Faltan campos obligatorios');
     }
   }
 }

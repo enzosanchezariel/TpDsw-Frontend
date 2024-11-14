@@ -66,7 +66,7 @@
                             <li role="none"><a [routerLink]="['/user-settings', user.email]" role="menuitem">Modificar
                                     datos</a></li>
                             <li role="none"><a routerLink="/remove-user" role="menuitem">Eliminar cuenta</a></li>
-                            <li role="none" [class.show]="canViewAdmin"><a routerLink="/admin-dashboard" role="menuitem">Administrador</a></li>
+                            <li role="none" *ngIf="canViewAdmin"><a routerLink="/admin-dashboard" role="menuitem">Administrador</a></li>
                         </ul>
                     </li>
                     <li role="none"><a (click)="logout()" role="menuitem">Cerrar sesión</a></li>
