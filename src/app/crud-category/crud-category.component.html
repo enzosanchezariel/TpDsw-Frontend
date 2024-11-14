@@ -1,0 +1,49 @@
+<div class="container">
+  <h2>Gestión de Categorías</h2>
+
+  <!-- Buscador por nombre -->
+  <div class="form-group">
+    <label for="search">Buscar por nombre:</label>
+    <input type="text" id="search" [(ngModel)]="searchTerm" class="form-control" />
+  </div>
+
+  <!-- Tabla de categorías -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th (click)="sort('id')">ID</th>
+        <th (click)="sort('name')">Nombre de la Categoría</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let category of filteredCategories">
+        <td>{{ category.id }}</td>
+        <td>
+          <!-- Editar nombre en línea -->
+          <input *ngIf="editingCategoryId === category.id" type="text" [(ngModel)]="category.name" />
+          <span *ngIf="editingCategoryId !== category.id">{{ category.name }}</span>
+        </td>
+        <td>
+          <button *ngIf="editingCategoryId !== category.id" class="btn btn-primary btn-sm"
+            (click)="startEditCategory(category)">Editar</button>
+          <button *ngIf="editingCategoryId === category.id" class="btn btn-success btn-sm"
+            (click)="updateCategory(category)">Guardar</button>
+          <button *ngIf="editingCategoryId === category.id" class="btn btn-secondary btn-sm"
+            (click)="cancelEdit()">Cancelar</button>
+          <button class="btn btn-danger btn-sm" (click)="confirmDeleteCategory(category.id)">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Agregar nueva categoría -->
+  <button *ngIf="!addingCategory" class="btn btn-primary" (click)="addingCategory = true">Agregar Categoría</button>
+
+  <div *ngIf="addingCategory" class="form-group mt-3">
+    <label for="newCategoryName">Nombre de la nueva categoría:</label>
+    <input type="text" id="newCategoryName" [(ngModel)]="newCategoryName" class="form-control" />
+    <button class="btn btn-success mt-2" (click)="createCategory()">Guardar</button>
+    <button class="btn btn-secondary mt-2" (click)="cancelAdd()">Cancelar</button>
+  </div>
+</div>

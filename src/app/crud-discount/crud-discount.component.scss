@@ -1,0 +1,29 @@
+.create-discount-container {
+  max-width: 400px;
+  margin: auto;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.3rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.error {
+  color: red;
+  font-size: 0.8rem;
+}

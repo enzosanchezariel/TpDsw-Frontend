@@ -1,12 +1,49 @@
 <div class="admin-dashboard">
-  <h1>Panel de Administración</h1>
-  <div>
-    <a (click)="navigateToCategoryCreation()">Crear Categoría</a>  
-    <p>Creacion de categorias de productos</p>
-    <a (click)="navigateToProductCreation()">Crear Producto</a>
-    <p>Creacion de productos, agregandole precio</p>
-    <!-- <li><a (click)="navegateToUsersRoles()">Usuarios del Sistema</a></li> -->
-    <!-- Ver si se va a terminar haciendo lo de roles -->
-    <!-- <a (click)="navigateToDiscountCreation"></a> -->
+  <h1 class="admin-dashboard__title">Panel de Administración</h1>
+  <div class="admin-dashboard__grid">
+    <div class="admin-card">
+      <div class="admin-card__header">
+        <h2 class="admin-card__title">
+          <i class="admin-card__icon fas fa-folder"></i>
+          <a (click)="navigateToCategoryCRUD()">Gestionar Categorías</a>
+        </h2>
+      </div>
+      <div class="admin-card__content">
+        <p class="admin-card__description">Gestión de categorías de productos</p>
+      </div>
+    </div>
+    <div class="admin-card">
+      <div class="admin-card__header">
+        <h2 class="admin-card__title">
+          <i class="admin-card__icon fas fa-box"></i>
+          <a (click)="navigateToProductCRUD()">Gestionar Productos</a>
+        </h2>
+      </div>
+      <div class="admin-card__content">
+        <p class="admin-card__description">Gestión de productos</p>
+      </div>
+    </div>
+    <div class="admin-card">
+      <div class="admin-card__header">
+        <h2 class="admin-card__title">
+          <i class="admin-card__icon fas fa-users"></i>
+          <a (click)="navegateToUsersRoles()">Usuarios del Sistema</a>
+        </h2>
+      </div>
+      <div class="admin-card__content">
+        <p class="admin-card__description">Gestión de roles de los usuarios</p>
+      </div>
+    </div>
+    <div class="admin-card">
+      <div class="admin-card__header">
+        <h2 class="admin-card__title">
+          <i class="admin-card__icon fas fa-percent"></i>
+          <a (click)="navigateToDiscountCRUD()">Gestionar Descuentos</a>
+        </h2>
+      </div>
+      <div class="admin-card__content">
+        <p class="admin-card__description">Gestión de descuentos</p>
+      </div>
+    </div>
   </div>
 </div>

@@ -1,0 +1,38 @@
+<div class="container">
+  <h2>Usuarios</h2>
+
+  <!-- Mostrar un cargador mientras se obtienen los usuarios -->
+  <div *ngIf="isLoading" class="spinner-border" role="status">
+    <span class="sr-only">Cargando...</span>
+  </div>
+
+  <!-- Tabla de usuarios -->
+  <table class="table mt-3" *ngIf="!isLoading">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Apellido</th>
+        <th>Correo electrónico</th>
+        <th>Rol</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users">
+        <td>{{ user.dni }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.last_name }}</td>
+        <td>{{ user.email }}</td>
+        <td>
+          <select [(ngModel)]="user.role">
+            <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+          </select>
+        </td>
+        <td>
+          <button class="btn btn-warning" (click)="changeRole(user)">Actualizar rol</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
