@@ -37,4 +37,9 @@ export class CategoryService {
     return this.http.delete<any>(url);
   }
 
+  desactivateCategory(id: string, category:Category): Observable<any> {
+    const url = this.baseUrl + `categories/${id}`;
+    return this.http.patch<any>(url, category);
+  }
+
 }

@@ -35,4 +35,9 @@ export class DiscountService {
     const url = this.baseUrl + `discounts/${id}`;
     return this.http.delete<any>(url);
   }
+
+  deactivateDiscount(id: string): Observable<any> {
+    const url = this.baseUrl + `discounts/${id}`;
+    return this.http.patch<any>(url, {});
+  }
 }

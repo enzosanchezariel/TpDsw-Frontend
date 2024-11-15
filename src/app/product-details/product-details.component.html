@@ -26,11 +26,11 @@
                         <!-- Mostrar precio según si tiene descuento o no -->
                         <ng-container>
                             <span>
-                                ${{ product.prices.at(0)?.price }}
+                                ${{ product.prices.at(-1)?.price }}
                             </span>
                         </ng-container>
                         <ng-template #noDiscount>
-                            ${{ product.prices.at(0)?.price }}
+                            ${{ product.prices.at(-1)?.price }}
                         </ng-template>
                     </h2>
                     <p *ngIf="product.discount && product.discount.percentage">

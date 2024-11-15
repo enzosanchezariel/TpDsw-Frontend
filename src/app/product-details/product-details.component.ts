@@ -21,7 +21,7 @@ export class ProductDetailsComponent {
   amount: number = 0;
   total: number = 0;
   id: string | null = null;
-  product: Product = new Product(0, '', '', [new Price(new Date(), 0)], '', 0, new Category(0, ''), new Discount(0, 0, 0));  
+  product: Product = new Product(0, '', '', [new Price(new Date(), 0)], '', 0,'', new Category(0, '',''), new Discount(0, 0, 0));  
   canViewEmployee: boolean = false;
   canViewAdmin: boolean = false;
 

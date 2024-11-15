@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../services/category.service';
+import { ProductsService } from '../services/products.service';
 import { Category } from '../../entities/category.entity.js';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-crud-category',
@@ -12,28 +14,28 @@ export class CrudCategory implements OnInit {
   editingCategoryId: number | null = null;
   addingCategory: boolean = false;
   newCategoryName: string = '';
-  newCategory: Category = new Category(0, '');
+  newCategory: Category = new Category(0, '','');
   searchTerm: string = '';  // Variable para búsqueda por nombre
   sortField: string = '';  // Campo por el que se ordenará (id o name)
   sortDirection: boolean = true; // Dirección de orden: true es ascendente, false es descendente
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(private categoryService: CategoryService, private productsService: ProductsService) {}
 
   ngOnInit(): void {
     this.loadCategories();
   }
 
   loadCategories(): void {
-    this.categoryService.getCategories().subscribe(
-      (response: any) => {
-        this.categories = response.data;
-        this.sortCategories();  // Ordenar después de cargar los datos
-      },
-      (error) => {
-        console.error('Error al cargar las categorías:', error);
-      }
-    );
-  }
+  this.categoryService.getCategories().subscribe(
+    (response: any) => {
+      this.categories = response.data.filter((category: any) => category.status === 'active');
+      this.sortCategories(); 
+    },
+    (error) => {
+      console.error('Error al cargar las categorías:', error);
+    }
+  );
+}
 
   // Función de ordenamiento
   sort(field: string): void {
@@ -70,7 +72,7 @@ export class CrudCategory implements OnInit {
     }
     
     const idCategory = category.id.toString();
-    const updatedCategory = { id: idCategory, name: category.name }; // Crear un objeto de tipo Category
+    const updatedCategory = { id: idCategory, name: category.name, status: category.status }; // Crear un objeto de tipo Category
 
     this.categoryService.updateCategory(category.id, updatedCategory).subscribe(
       () => {
@@ -94,7 +96,7 @@ export class CrudCategory implements OnInit {
       return;
     }
 
-    const newCategory = new Category(0, this.newCategoryName); // Crear un objeto de tipo Category
+    const newCategory = new Category(0, this.newCategoryName, 'active'); // Crear un objeto de tipo Category
     this.categoryService.createCategory(newCategory).subscribe(
       (response) => {
         this.loadCategories();
@@ -113,14 +115,18 @@ export class CrudCategory implements OnInit {
   }
 
   confirmDeleteCategory(categoryId: number): void {
-    const confirmation = confirm('¿Estás seguro de que deseas eliminar esta categoría?');
+    const confirmation = confirm('¿Estás seguro de que deseas eliminar esta categoría? Si existen productos asociados a esta categoría, también se eliminaran.');
     if (confirmation) {
       this.deleteCategory(categoryId);
+    } else{
+      console.log('Eliminación de la categoría cancelada');
     }
   }
 
   deleteCategory(categoryId: number): void {
-    this.categoryService.deleteCategory(categoryId.toString()).subscribe(
+    const categoryToDeactivate = this.categories.find(category => category.id === categoryId);
+    if (categoryToDeactivate) {
+      this.categoryService.desactivateCategory(categoryId.toString(), categoryToDeactivate).subscribe(
       (response) => {
         console.log(response); // Esto debería mostrar "Category removed"
         this.loadCategories(); // Recargar las categorías después de la eliminación
@@ -130,4 +136,5 @@ export class CrudCategory implements OnInit {
       }
     );
   }
+ }
 }
