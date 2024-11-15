@@ -96,7 +96,7 @@ export class CrudDiscountComponent implements OnInit {
 
   deleteDiscount(id: number): void {
     if (confirm('¿Estás seguro de que deseas eliminar este descuento?')) {
-      this.discountService.deleteDiscount(id.toString()).subscribe(
+      this.discountService.deactivateDiscount(id.toString()).subscribe(
         (response) => {
           alert('Descuento eliminado');
           this.loadDiscounts(); // Recargar la lista de descuentos

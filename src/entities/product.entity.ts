@@ -8,6 +8,7 @@ export class Product {
     public desc: string;
     public img: string;
     public stock: number;
+    public status: string;
     public prices: Price[] = [];
     public category: Category; 
     public discount: Discount; 
@@ -19,6 +20,7 @@ export class Product {
         prices: Price[] = [],
         img: string, 
         stock: number, 
+        status: string,
         category: Category, 
         discount: Discount,
     ) {
@@ -27,6 +29,7 @@ export class Product {
         this.desc = desc;
         this.img = img;
         this.stock = stock;
+        this.status = status;
         this.prices = prices;
         this.category = category;
         this.discount = discount;

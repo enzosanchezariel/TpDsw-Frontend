@@ -49,7 +49,7 @@ export class CrudProducts implements OnInit {
 
   deleteProduct(): void {
     if (!this.product) return; // Asegura que hay un producto seleccionado
-    this.productsService.deleteProduct(this.product.id.toString()).subscribe(
+    this.productsService.deactivateProduct(this.product.id.toString(), this.product).subscribe(
       () => {
         alert('Producto eliminado con éxito');
         this.loadProducts();

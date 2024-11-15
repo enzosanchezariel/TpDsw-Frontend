@@ -50,4 +50,9 @@ export class ProductsService {
     return this.http.delete<any>(url);
   }
 
+  deactivateProduct(id: string, product: Product): Observable<any> {
+    const url = this.baseUrl + `products/${id}`;
+    return this.http.patch<any>(url, product);
+  }
+
 }
