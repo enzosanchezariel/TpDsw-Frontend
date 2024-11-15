@@ -1,0 +1,26 @@
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Fecha</th>
+      <th>Estado</th>
+      <th>Productos</th>
+      <th>Entrega</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let ticket of tickets">
+      <td>{{ ticket.number }}</td>
+      <td>{{ ticket.date | date }}</td>
+      <td>{{ ticket.state }}</td>
+      <td>
+        <ul>
+          <li *ngFor="let productAmount of ticket.product_amounts">
+            Producto: {{ productAmount.product.name }}, Cantidad: {{ productAmount.amount }}
+          </li>
+        </ul>
+      </td>
+      <td>{{ ticket.delivery ? ticket.delivery.tracking_number : 'N/A' }}</td>
+    </tr>
+  </tbody>
+</table>

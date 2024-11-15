@@ -5,7 +5,7 @@
         </div>
         <div class="details">
             <strong class="name">{{ cardInput.name }}</strong>
-            <p class="price">${{ cardInput.prices.at(0)?.price }}</p>
+            <p class="price">${{ cardInput.prices.at(-1)?.price }}</p>
             <!-- No muestra el ultimo precio, sino el anterior -->
         </div>
     </div>

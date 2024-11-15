@@ -16,6 +16,7 @@ import { CrudDiscountComponent } from './crud-discount/crud-discount.component.j
 import { UserListComponent } from './user-list/user-list.component.js';
 import { CrudProducts } from './crud-product/crud-product.component';
 import { ShopListComponent } from './shop-list/shop-list.component';
+import { AdminOrderListComponent } from './delivery-list/delivery-list.component.js';
 
 
 export const routes: Routes = [
@@ -33,6 +34,7 @@ export const routes: Routes = [
     { path: 'user-list', component: UserListComponent },
     { path: 'remove-user', component: RemoveUserComponent },
     { path: 'user-settings/:email', component: UserSettingsComponent },
+    { path: 'delivery-list', component: AdminOrderListComponent },
     { path: 'crud-product', component: CrudProducts },
     { path: 'search-results', component: SearchResultsComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full' },  
