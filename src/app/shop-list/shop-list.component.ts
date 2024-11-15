@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ProductsService } from '../services/products.service';
 import { DiscountService } from '../services/discount.service';
 import { ProductAmount } from '../../entities/productamount.entity';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-shop-list',
@@ -52,5 +53,37 @@ export class ShopListComponent {
     console.log(convertedTickets)
 
     return convertedTickets;
+  }
+  
+  getSubTotalCart(pa: ProductAmount) {
+    let price = pa.product.prices[pa.product.prices.length -1].price;
+    let subTot = price * pa.amount;
+    let subTotDiscount = 0;
+    if (pa.discount && pa.amount >= pa.discount.units) {
+      subTotDiscount = subTot * (pa.discount.percentage / 100);
+    }
+    return subTot - subTotDiscount;
+  }
+
+  getTotalCart() {
+    let total = 0;
+    this.cart.forEach(pa => {
+      total += this.getSubTotalCart(pa);
+    });
+    return total;
+  }
+
+  removeFromCart(idProd: number) {
+    const index = this.cart.findIndex(pa => pa.product.id === idProd);
+    if (index !== -1) {
+      this.ordersService.removeFromCart(index);
+    }
+  }
+
+  sendOrder() {
+    this.ordersService.sendCart().subscribe((Response) => {});
+    this.ordersService.resetCart();
+    this.cart = [];
+    location.reload();
   }
 }

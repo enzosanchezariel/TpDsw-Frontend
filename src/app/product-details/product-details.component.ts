@@ -27,6 +27,7 @@ export class ProductDetailsComponent {
   canViewEmployee: boolean = false;
   canViewAdmin: boolean = false;
   loggedIn: boolean = false;
+  cart: ProductAmount[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -42,6 +43,7 @@ export class ProductDetailsComponent {
     if (this.id !== null) {
       this.service.getOneProduct(this.id).subscribe((response) => this.product = response.data);
     }
+    this.cart = this.ordersService.getCart();
   }
 
   checkViews(): void {
@@ -99,5 +101,9 @@ export class ProductDetailsComponent {
     if (this.amount > 0) {
       this.ordersService.addToCart(new ProductAmount(this.product, this.amount, this.product.discount));
     }
+  }
+
+  checkIfAdded(): boolean {
+    return this.cart.some(pa => pa.product.id === Number(this.id));
   }
 }

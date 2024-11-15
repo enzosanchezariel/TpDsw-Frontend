@@ -3,6 +3,7 @@ import { Ticket } from '../../entities/ticket.entity';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../entities/product.entity';
 import { ProductAmount } from '../../entities/productamount.entity';
+import { OrdersService } from '../services/orders.service';
 
 @Component({
   selector: 'app-order-card',
@@ -14,7 +15,12 @@ import { ProductAmount } from '../../entities/productamount.entity';
 export class OrderCardComponent {
 
   @Input() ticketInput!: Ticket;
+  @Input() cancellable!: boolean;
   
+  constructor(
+    private ordersService: OrdersService,
+  ) {}
+
   getProdutPriceWithDate(prod: Product) {
     const targetDate = new Date(this.ticketInput.date);
 
@@ -48,6 +54,18 @@ export class OrderCardComponent {
       total += this.getSubTotal(pa);
     });
     return total;
+  }
+
+  delete() {
+    this.ordersService.deleteTicket(this.ticketInput.number);
+    //window.location.reload();
+  }
+
+  confirmDelete(): void {
+    const confirmed = window.confirm(`¿Estás seguro de que deseas eliminar el pedido?`);
+    if (confirmed) {
+      this.delete();
+    }
   }
   
 }
