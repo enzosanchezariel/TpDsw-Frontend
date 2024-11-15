@@ -22,11 +22,16 @@ export class AuthService {
           localStorage.setItem('access_token', accessToken);
           localStorage.setItem('role', (response as any).data.role);
           localStorage.setItem('email', email);
+          localStorage.setItem('token_id', (response as any).data.token_id)
           this.isAuthenticatedSubject.next(true);  // Actualiza el estado de autenticación
           this.userRoleSubject.next((response as any).data.role);  // Actualiza el rol
         }
       })
     );
+  }
+
+  getUserTokenId(): string | null {
+    return localStorage.getItem('token_id');
   }
 
   // Método para obtener el email del usuario desde localStorage

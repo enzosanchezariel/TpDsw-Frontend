@@ -1,0 +1,36 @@
+<article>
+    <h4>Orden n° {{ticketInput.number}}</h4>
+    <p>Fecha de la orden: {{ticketInput.date | date:'dd/MM/yyyy'}}</p>
+    <p *ngIf="ticketInput.delivery && ticketInput.delivery.date">Fecha de entrega: {{ticketInput.delivery.date | date:'dd/MM/yyyy'}}</p>
+    <p *ngIf="ticketInput.delivery">Codigo de seguimiento: {{ticketInput.delivery.tracking_number}}</p>
+    <p>Productos solicitados:</p>
+    <table>
+        <thead>
+        <tr>
+            <th scope="col">Producto</th>
+            <th scope="col">Precio individual</th>
+            <th scope="col">Descuento</th>
+            <th scope="col">Unidades</th>
+            <th scope="col">Sub total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let product_amount of ticketInput.product_amounts">
+            <th scope="row">{{product_amount.product.name}}</th>
+            <td>{{getProdutPriceWithDate(product_amount.product)}}</td>
+            <td>{{product_amount.discount ? product_amount.discount.percentage : 0}}%</td>
+            <td>{{product_amount.amount}}</td>
+            <td>{{getSubTotal(product_amount)}}</td>
+        </tr>
+        </tbody>
+        <tfoot>
+        <tr>
+            <th scope="row">Total</th>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{getTotal()}}</td>
+        </tr>
+        </tfoot>
+    </table>
+</article>

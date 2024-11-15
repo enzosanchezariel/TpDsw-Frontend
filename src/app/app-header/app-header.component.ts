@@ -10,6 +10,7 @@ import { CategoryService } from '../services/category.service';
 import { Category } from '../../entities/category.entity';
 import { User } from '../../entities/user.entity';
 import { Subscription } from 'rxjs';
+import { OrdersService } from '../services/orders.service';
 
 @Component({
   selector: 'app-header',
@@ -38,7 +39,8 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private productsService: ProductsService,
     private router: Router,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private ordersService: OrdersService
   ) {}
 
   ngOnInit(): void {
@@ -55,6 +57,10 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
 
     // Obtener las categorías del servicio
     this.categoryService.getCategories().subscribe((response) => this.categories = response.data);
+
+    this.ordersService.orderAdded.subscribe(
+      () => {this.cartEffect();}
+    );
   }
 
   ngOnDestroy(): void {
@@ -102,5 +108,15 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   logout(): void {
     this.authService.logout();
     alert('Sesión cerrada');
+  }
+
+  cartEffect(): void {
+    const cartIcon = document.getElementById('cart-icon');
+    if (cartIcon) {
+      cartIcon.classList.add('cart-icon-effect');
+      setTimeout(() => {
+        cartIcon.classList.remove('cart-icon-effect');
+      }, 1000);
+    }
   }
 }

@@ -15,10 +15,12 @@ import { CategoryResultsComponent } from './category-results/category-results.co
 import { CrudDiscountComponent } from './crud-discount/crud-discount.component.js';
 import { UserListComponent } from './user-list/user-list.component.js';
 import { CrudProducts } from './crud-product/crud-product.component';
+import { ShopListComponent } from './shop-list/shop-list.component';
 
 
 export const routes: Routes = [
     { path: 'home', component: IndexBodyComponent },
+    { path: 'shop-list', component: ShopListComponent },
     { path: 'productdetails/:id', component: ProductDetailsComponent },
     { path: 'admin-dashboard', component: AdminDashboardComponent },
     { path: 'create-product', component: ProductCreateComponent }, 

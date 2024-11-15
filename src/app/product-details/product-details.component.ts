@@ -9,6 +9,8 @@ import { Category } from '../../entities/category.entity.js';
 import { Discount } from '../../entities/discount.entity.js';
 import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
+import { OrdersService } from '../services/orders.service';
+import { ProductAmount } from '../../entities/productamount.entity';
 
 @Component({
   selector: 'app-product-details',
@@ -24,11 +26,13 @@ export class ProductDetailsComponent {
   product: Product = new Product(0, '', '', [new Price(new Date(), 0)], '', 0, new Category(0, ''), new Discount(0, 0, 0));  
   canViewEmployee: boolean = false;
   canViewAdmin: boolean = false;
+  loggedIn: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private service: ProductsService,
     private authService: AuthService,
+    private ordersService: OrdersService,
     private router: Router
   ) {}
 
@@ -43,6 +47,7 @@ export class ProductDetailsComponent {
   checkViews(): void {
     this.canViewEmployee = this.authService.getRole() === 'empleado' || this.authService.getRole() === 'admin'; 
     this.canViewAdmin = this.authService.getRole() === 'admin';
+    this.loggedIn = this.authService.isAuthenticated();
   }
 
   confirmDelete(): void {
@@ -88,5 +93,11 @@ export class ProductDetailsComponent {
   originalTotal(): number {
     const price = this.product.prices.at(0)?.price ?? 0;
     return price * this.amount;
+  }
+
+  addToCart(): void {
+    if (this.amount > 0) {
+      this.ordersService.addToCart(new ProductAmount(this.product, this.amount, this.product.discount));
+    }
   }
 }

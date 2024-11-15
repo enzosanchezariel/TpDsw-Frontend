@@ -1,0 +1,33 @@
+<div class="container">
+    <section></section>
+    <section>
+        <h3>Carrito de compras</h3>
+        <div *ngFor="let ticket of tickets">
+            <app-order-card [ticketInput]="ticket"></app-order-card>
+        </div>
+    </section>
+    <section>
+        <h3>Órdenes en preparación</h3>
+        <div *ngFor="let ticket of tickets">
+            <app-order-card *ngIf="ticket.state === 'enPreparacion'" [ticketInput]="ticket"></app-order-card>
+        </div>
+    </section>
+    <section>
+        <h3>Órdenes en envío</h3>
+        <div *ngFor="let ticket of tickets">
+            <app-order-card *ngIf="ticket.state === 'enEnvio'" [ticketInput]="ticket"></app-order-card>
+        </div>
+    </section>
+    <section>
+        <h3>Órdenes enviadas</h3>
+        <div *ngFor="let ticket of tickets">
+            <app-order-card *ngIf="ticket.state === 'enviado'" [ticketInput]="ticket"></app-order-card>
+        </div>
+    </section>
+    <section>
+        <h3>Órdenes rechazadas</h3>
+        <div *ngFor="let ticket of tickets">
+            <app-order-card *ngIf="ticket.state === 'rechazado'" [ticketInput]="ticket"></app-order-card>
+        </div>
+    </section>
+</div>

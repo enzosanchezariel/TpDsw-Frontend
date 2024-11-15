@@ -41,9 +41,9 @@
                     </p>
                     <p>{{ product.desc }}</p>
                 </div>
-                <strong>Cantidad de unidades:</strong>
-                <input [(ngModel)]="amount" name="amount" type="number" placeholder="1" min="0" />
-                <div class="side-to-side">
+                <strong *ngIf="loggedIn">Cantidad de unidades:</strong>
+                <input *ngIf="loggedIn" [(ngModel)]="amount" name="amount" type="number" placeholder="1" min="0" />
+                <div *ngIf="loggedIn" class="side-to-side">
                     <div>
                         <strong>Total:</strong>
                         <span *ngIf="product.discount">
@@ -62,12 +62,13 @@
                             </h3>
                         </span>
                     </div>
-                    <div class="button-group">
-                        <button class="add-to-cart">Añadir al carrito</button>
+                    <div class="button-group" *ngIf="loggedIn">
+                        <button class="add-to-cart" (click)="addToCart()" [disabled]="amount <= 0">Añadir al carrito</button>
                         <button *ngIf="canViewEmployee" [routerLink]="['/edit-product', product.id]"
                             class="edit-product">Modificar Producto</button>
                     </div>
                 </div>
+                <strong *ngIf="!loggedIn">inicia sesión para realizar pedidos</strong>
             </div>
         </div>
     </div>
