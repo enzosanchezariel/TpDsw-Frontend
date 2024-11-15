@@ -21,6 +21,7 @@ import { CategoryResultsComponent } from './category-results/category-results.co
 import { CrudDiscountComponent } from './crud-discount/crud-discount.component.js';
 import { UserListComponent } from './user-list/user-list.component.js';
 import { CrudProducts } from './crud-product/crud-product.component';
+import { AdminOrderListComponent } from './delivery-list/delivery-list.component.js';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -33,6 +34,7 @@ const routes: Routes = [
   { path: 'crud-discount', component: CrudDiscountComponent },
   { path: 'user-settings/:email', component: UserSettingsComponent },
   { path: 'crud-product', component: CrudProducts },
+  { path: 'delivery-list', component: AdminOrderListComponent },
   { path: 'search-results', component: SearchResultsComponent },
   { path: 'user-list', component: UserListComponent },
   { path: 'remove-user', component: RemoveUserComponent },
@@ -66,7 +68,8 @@ const routes: Routes = [
     AuthComponent,
     AppHeaderComponent,
     ProductGridComponent,
-    AdminDashboardComponent
+    AdminDashboardComponent,
+    AdminOrderListComponent
 ],
   providers: [],
   bootstrap: [AppComponent],

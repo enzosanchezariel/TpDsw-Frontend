@@ -27,4 +27,8 @@ export class AdminDashboardComponent {
   navegateToUsersRoles() {
     this.router.navigate(['/user-list']);
   }
+
+  navegateToDeliveries() {
+    this.router.navigate(['/delivery-list']);
+  }
 }

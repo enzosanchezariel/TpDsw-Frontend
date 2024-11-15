@@ -74,7 +74,7 @@ export class ProductDetailsComponent {
 
   // Calcula el total, considerando el descuento solo si se cumplen las condiciones
   calculateTotal(): number {
-    const price = this.product.prices.at(0)?.price ?? 0;
+    const price = this.product.prices.at(-1)?.price ?? 0;
     const discount = this.product.discount?.percentage ?? 0;
     
     // Si el producto tiene descuento y se cumple el requisito de unidades

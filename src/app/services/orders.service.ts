@@ -61,6 +61,10 @@ export class OrdersService {
     return this.http.get<any>(`${this.apiUrl}/user/${this.authService.getUserTokenId()}`, { headers });
   }
 
+  getAllTickets(): Observable<any> {
+  return this.http.get('/api/tickets'); // Asegúrate de que la URL esté correcta según tu API
+  }
+
   deleteTicket(number: number): void {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authService.getToken()}`
