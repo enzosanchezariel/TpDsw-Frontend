@@ -1,6 +1,6 @@
 # TpDsw - Frontend - La Gallega
 ## Participantes
-- Orti Valentino
+- Ortiz Valentino
 - Sanchez Enzo
 - Spertino Mateo
 # Instalación
