@@ -1,5 +1,6 @@
 <article>
     <h4>Orden n° {{ticketInput.number}}</h4>
+    <p *ngIf="showUser && getUser() !== undefined && getUser() !== null">Usuario: {{getUser().name}} {{getUser().last_name}}, Dirección: {{getUser().address}}, Numero: {{getUser().phone}}</p>
     <p>Fecha de la orden: {{ticketInput.date | date:'dd/MM/yyyy'}}</p>
     <p *ngIf="ticketInput.delivery && ticketInput.delivery.date">Fecha de entrega: {{ticketInput.delivery.date | date:'dd/MM/yyyy'}}</p>
     <p *ngIf="ticketInput.delivery">Codigo de seguimiento: {{ticketInput.delivery.tracking_number}}</p>
@@ -33,5 +34,7 @@
         </tr>
         </tfoot>
     </table>
-    <button *ngIf="cancellable" (click)="confirmDelete()">Cancelar pedido</button>
+    <div><button *ngIf="cancellable" (click)="confirmDelete()">Cancelar pedido</button></div>
+    <div style="margin-top: 10px;"><button *ngIf="markInProgressButton" (click)="markInProgress()">Marcar como en envío</button></div>
+    <div style="margin-top: 10px;"><button *ngIf="markSentButton" (click)="markAsSent()">Marcar como enviada</button></div>
 </article>

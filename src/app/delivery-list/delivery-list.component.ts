@@ -4,72 +4,51 @@ import { CommonModule } from '@angular/common';
 import { OrdersService } from '../services/orders.service'; // Asegúrate de importar tu servicio
 import { Product } from '../../entities/product.entity.js';
 import { ProductAmount } from '../../entities/productamount.entity.js';
+import { ProductsService } from '../services/products.service';
+import { DiscountService } from '../services/discount.service';
+import { OrderCardComponent } from "../order-card/order-card.component";
 
 @Component({
   selector: 'app-admin-order-list',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, OrderCardComponent],
   templateUrl: './delivery-list.component.html',
   styleUrls: ['./delivery-list.component.scss']
 })
 export class AdminOrderListComponent implements OnInit {
 
-  tickets: Ticket[] = [];  // Array para almacenar los tickets
+  tickets: Ticket[] = []
 
-  constructor(private ordersService: OrdersService) {}
+  constructor(
+    private ordersService: OrdersService,
+    private productsService: ProductsService,
+    private discountService: DiscountService
+  ){}
 
-  ngOnInit() {
-    // Cargar todos los tickets al iniciar el componente
-    this.loadOrders();
+  ngOnInit(): void {
+    this.ordersService.getAllTickets().subscribe((response) => {this.tickets = this.mapTicket(response.data)});
   }
 
-  // Método para cargar los tickets desde el backend
-  loadOrders() {
-    this.ordersService.getAllTickets().subscribe(
-      (tickets: Ticket[]) => {
-        this.tickets = tickets;  // Asignar los tickets a la variable 'tickets'
-      },
-      (error) => {
-        console.error('Error loading tickets:', error);
+  mapTicket(data: any): Ticket[] {
+    let convertedTickets: Ticket[] = [];
+    for (let aTicket of data) {
+      for (let aPA of aTicket.product_amounts) {
+        this.productsService.getOneProduct(aPA.product).subscribe(
+          (response) => {
+            aPA.product = response.data
+          }
+        );
+        if (aPA.discount) {
+          this.discountService.getDiscountById(aPA.discount).subscribe(
+            (response) => {
+              aPA.discount = response.data
+            }
+          );
+        }
       }
-    );
-  }
-
-  // Método para obtener el precio de un producto con fecha específica
-  getProdutPriceWithDate(prod: Product, ticketDate: Date) {
-    const targetDate = new Date(ticketDate);
-
-    const validPrices = prod.prices.filter(price => {
-      const priceDate = new Date(price.date);
-      return priceDate <= targetDate;
-    });
-
-    if (validPrices.length === 0) {
-      return 0;
+      convertedTickets.push(aTicket)
     }
 
-    validPrices.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-    return validPrices[0].price ?? 0;
-  }
-
-  // Método para calcular el subtotal con los descuentos
-  getSubTotal(pa: ProductAmount, ticketDate: Date) {
-    let price = this.getProdutPriceWithDate(pa.product, ticketDate) ?? 0;
-    let subTot = price * pa.amount;
-    let subTotDiscount = 0;
-    if (pa.discount) {
-      subTotDiscount = subTot * (pa.discount.percentage / 100);
-    }
-    return subTot - subTotDiscount;
-  }
-
-  // Método para obtener el total del ticket
-  getTotal(ticket: Ticket) {
-    let total = 0;
-    ticket.product_amounts.forEach(pa => {
-      total += this.getSubTotal(pa, ticket.date);
-    });
-    return total;
+    return convertedTickets;
   }
 }

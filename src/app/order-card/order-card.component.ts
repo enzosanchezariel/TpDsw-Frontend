@@ -16,6 +16,10 @@ export class OrderCardComponent {
 
   @Input() ticketInput!: Ticket;
   @Input() cancellable!: boolean;
+
+  @Input() markInProgressButton?: boolean = false;
+  @Input() markSentButton?: boolean = false;
+  @Input() showUser?: boolean = false;
   
   constructor(
     private ordersService: OrdersService,
@@ -58,7 +62,7 @@ export class OrderCardComponent {
 
   delete() {
     this.ordersService.deleteTicket(this.ticketInput.number);
-    //window.location.reload();
+    window.location.reload();
   }
 
   confirmDelete(): void {
@@ -66,6 +70,20 @@ export class OrderCardComponent {
     if (confirmed) {
       this.delete();
     }
+  }
+
+  markInProgress() {
+    this.ordersService.markInProgress(this.ticketInput.number);
+    window.location.reload();
+  }
+
+  markAsSent() {
+    this.ordersService.markAsSent(this.ticketInput.number);
+    window.location.reload();
+  }
+
+  getUser() {
+    return this.ticketInput.user;
   }
   
 }

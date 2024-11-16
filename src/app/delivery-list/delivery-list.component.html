@@ -1,26 +1,27 @@
-<table>
-  <thead>
-    <tr>
-      <th>#</th>
-      <th>Fecha</th>
-      <th>Estado</th>
-      <th>Productos</th>
-      <th>Entrega</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let ticket of tickets">
-      <td>{{ ticket.number }}</td>
-      <td>{{ ticket.date | date }}</td>
-      <td>{{ ticket.state }}</td>
-      <td>
-        <ul>
-          <li *ngFor="let productAmount of ticket.product_amounts">
-            Producto: {{ productAmount.product.name }}, Cantidad: {{ productAmount.amount }}
-          </li>
-        </ul>
-      </td>
-      <td>{{ ticket.delivery ? ticket.delivery.tracking_number : 'N/A' }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="container">
+  <section></section>
+  <section>
+      <h3>Órdenes en preparación</h3>
+      <div *ngFor="let ticket of tickets">
+          <app-order-card *ngIf="ticket.state === 'enPreparacion'" [showUser]="true" [markInProgressButton]="true" [cancellable]="true" [ticketInput]="ticket"></app-order-card>
+      </div>
+  </section>
+  <section>
+      <h3>Órdenes en envío</h3>
+      <div *ngFor="let ticket of tickets">
+          <app-order-card *ngIf="ticket.state === 'enEnvio'" [showUser]="true" [markSentButton]="true" [cancellable]="true" [ticketInput]="ticket"></app-order-card>
+      </div>
+  </section>
+  <section>
+      <h3>Órdenes enviadas</h3>
+      <div *ngFor="let ticket of tickets">
+          <app-order-card *ngIf="ticket.state === 'enviado'" [showUser]="true" [ticketInput]="ticket"></app-order-card>
+      </div>
+  </section>
+  <section>
+      <h3>Órdenes rechazadas</h3>
+      <div *ngFor="let ticket of tickets">
+          <app-order-card *ngIf="ticket.state === 'rechazado'" [showUser]="true" [ticketInput]="ticket"></app-order-card>
+      </div>
+  </section>
+</div>

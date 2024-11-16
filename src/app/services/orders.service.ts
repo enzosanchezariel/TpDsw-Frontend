@@ -62,7 +62,13 @@ export class OrdersService {
   }
 
   getAllTickets(): Observable<any> {
-  return this.http.get('/api/tickets'); // Asegúrate de que la URL esté correcta según tu API
+    const token = this.authService.getToken();
+
+    const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`
+    });
+
+    return this.http.get(this.apiUrl, { headers }); // Asegúrate de que la URL esté correcta según tu API
   }
 
   deleteTicket(number: number): void {
@@ -78,5 +84,27 @@ export class OrdersService {
   resetCart() {
     this.product_amounts = [];
     localStorage.setItem('cart', JSON.stringify(this.product_amounts)); 
+  }
+
+  getTicketById(number: number): Observable<any> {
+    const token = this.authService.getToken();
+
+    const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`
+    });
+
+    return this.http.get<any>(`${this.apiUrl}/${number}`, { headers });
+  }
+
+  markInProgress(number: number) {
+    this.http.patch(`${this.apiUrl}/${number}`, { access_token: this.authService.getToken(), state: "enEnvio" }).subscribe(() => {
+      console.log('Ticket en envío');
+    });
+  }
+
+  markAsSent(number: number) {
+    this.http.patch(`${this.apiUrl}/${number}`, { access_token: this.authService.getToken(), state: "enviado" }).subscribe(() => {
+      console.log('Ticket enviado');
+    });
   }
 }
