@@ -1,0 +1,155 @@
+.container {
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    color: #4a0e4e;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    thead {
+      background-color: #f1f1f1;
+      text-align: left;
+
+      th {
+        padding: 10px;
+        cursor: pointer;
+        color: #4a0e4e;
+        width: 25%;
+        /* Distribuir el espacio */
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid #ccc;
+
+        td {
+          padding: 10px;
+          vertical-align: middle;
+          width: 25%;
+          /* Distribuir el espacio */
+        }
+
+        .btn {
+          margin-right: 15px;
+          /* Separar los botones */
+        }
+      }
+    }
+  }
+
+  .btn {
+    margin: 0 8px;
+    /* Espaciado entre botones */
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.btn-warning {
+      background-color: #8e44ad;
+      color: white;
+
+      &:hover {
+        background-color: #6c3483;
+      }
+    }
+
+    &.btn-danger {
+      background-color: #dc3545;
+      color: white;
+
+      &:hover {
+        background-color: #c82333;
+      }
+    }
+
+    &.btn-primary {
+      background-color: #8e44ad;
+      color: white;
+
+      &:hover {
+        background-color: #6c3483;
+      }
+    }
+
+    &.btn-success {
+      background-color: #28a745;
+      color: white;
+
+      &:hover {
+        background-color: #218838;
+      }
+    }
+
+    &.btn-secondary {
+      background-color: #6c757d;
+      color: white;
+
+      &:hover {
+        background-color: #5a6268;
+      }
+    }
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+
+    input {
+      width: 100%;
+      /* Asegura que ocupe todo el ancho */
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 16px;
+
+      &:focus {
+        outline: none;
+        border-color: #8e44ad;
+        box-shadow: 0 0 0 2px rgba(142, 68, 173, 0.2);
+      }
+    }
+
+    button {
+      background-color: #8e44ad;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+
+      &:hover {
+        background-color: #6c3483;
+      }
+
+      &.btn-success {
+        background-color: #28a745;
+
+        &:hover {
+          background-color: #218838;
+        }
+      }
+
+      &.btn-secondary {
+        background-color: #6c757d;
+
+        &:hover {
+          background-color: #5a6268;
+        }
+      }
+    }
+  }
+}

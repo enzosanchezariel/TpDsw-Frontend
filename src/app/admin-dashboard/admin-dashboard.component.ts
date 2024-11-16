@@ -12,11 +12,23 @@ export class AdminDashboardComponent {
    constructor(private router: Router) {}
 
   // Método para redirigir al formulario de creación de categoría
-  navigateToCategoryCreation() {
-    this.router.navigate(['/create-category']);
+  navigateToCategoryCRUD() {
+    this.router.navigate(['/crud-category']);
   }
 
-  navigateToProductCreation() {
-    this.router.navigate(['/create-product']);
+  navigateToProductCRUD() {
+    this.router.navigate(['/crud-product']);
+  }
+
+  navigateToDiscountCRUD() {
+    this.router.navigate(['/crud-discount']);
+  }
+
+  navegateToUsersRoles() {
+    this.router.navigate(['/user-list']);
+  }
+
+  navegateToDeliveries() {
+    this.router.navigate(['/delivery-list']);
   }
 }

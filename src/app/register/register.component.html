@@ -47,7 +47,7 @@
       #phone="ngModel" />
     <div *ngIf="phone.invalid && phone.touched" class="error-message">
       <strong>Campo obligatorio</strong>
-    </div> <!-- Aquí se agrega el cierre -->
+    </div>
   </div>
 
     <div class="form-group">
@@ -61,12 +61,32 @@
 
     <div class="form-group">
       <label for="password">Contraseña</label>
-      <input type="password" id="password" class="form-control" required [(ngModel)]="registerData.password"
-        name="password" #password="ngModel" />
-      <div *ngIf="password.invalid && password.touched" class="error-message">
+      <input type="password" id="password" class="form-control" required [(ngModel)]="registerData.password" name="password"
+        #password="ngModel" pattern="^(?=.*[A-Z]).{8,}$" />
+      <div *ngIf="password.errors?.['required'] && password.touched" class="error-message">
         <strong>Campo obligatorio</strong>
       </div>
+      <div *ngIf="password.errors?.['pattern'] && password.touched" class="error-message">
+        <strong>La contraseña debe tener al menos 8 caracteres y una letra mayúscula</strong>
+      </div>
     </div>
+
+    <div class="form-group">
+      <label for="confirmPassword">Confirmar Contraseña</label>
+      <input type="password" id="confirmPassword" class="form-control" required [(ngModel)]="registerData.confirmPassword"
+        name="confirmPassword" #confirmPassword="ngModel" pattern="^(?=.*[A-Z]).{8,}$"
+        [ngClass]="{'is-invalid': confirmPassword.invalid && confirmPassword.touched}" />
+      <div *ngIf="confirmPassword.errors?.['required'] && confirmPassword.touched" class="error-message">
+        <strong>Campo obligatorio</strong>
+      </div>
+      <div *ngIf="confirmPassword.errors?.['pattern'] && confirmPassword.touched" class="error-message">
+        <strong>La contraseña debe tener al menos 8 caracteres y una letra mayúscula</strong>
+      </div>
+      <div *ngIf="confirmPassword.value !== registerData.password && confirmPassword.touched" class="error-message">
+        <strong>Las contraseñas no coinciden</strong>
+      </div>
+    </div>
+
 
     <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Registrarse</button>
 

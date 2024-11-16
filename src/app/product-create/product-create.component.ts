@@ -87,8 +87,9 @@ export class ProductCreateComponent implements OnInit {
         productData.price,
         productData.img, // img, del formulario
         productData.stock, // stock, del formulario
+        productData.status,
         productData.categoryId, // Solo el ID de la categoría
-        0
+        productData.discount // discount, del formulario
     );
 
     console.log('Nuevo producto:', newProduct);

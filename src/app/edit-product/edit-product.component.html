@@ -21,6 +21,16 @@
       <input type="text" id="img" formControlName="img" />
     </div>
 
+    <div>
+      <label for="discount">Descuento:</label>
+      <select id="discount" formControlName="discount_id">
+        <option *ngFor="let discount of discounts" [value]="discount.id">
+          {{ discount.percentage }}% de descuento en {{ discount.units }} unidad/es
+        </option>
+        <option value="null">Producto sin descuentos</option> <!-- Opción para no asignar descuento -->
+      </select>
+    </div>
+
     <button type="submit">Modificar Producto</button>
     <button type="button" (click)="cancel()">Cancelar</button>
   </form>

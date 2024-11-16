@@ -27,5 +27,10 @@ export class UserService {
     const url = this.apiUrl + `users/${email}`;
     return this.http.delete<any>(url);
   }
+
+  getUsers(): Observable<any> {
+    const url = this.apiUrl + 'users';
+    return this.http.get<any>(url);
+  }
   
 }

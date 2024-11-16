@@ -1,0 +1,125 @@
+.container {
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  h2 {
+    color: #4a0e4e;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+
+    thead {
+      background-color: #f1f1f1;
+      text-align: left;
+
+      th {
+        padding: 10px;
+        cursor: pointer;
+        color: #4a0e4e;
+      }
+    }
+
+    tbody {
+      tr {
+        border-bottom: 1px solid #ccc;
+
+        td {
+          padding: 10px;
+          vertical-align: middle;
+        }
+
+        .btn {
+          margin-right: 15px;
+          /* Separar los botones */
+        }
+      }
+    }
+  }
+
+  .table td:nth-child(1),
+  .table th:nth-child(1) {
+    width: 10%;
+    /* ID */
+  }
+
+  .table td:nth-child(2),
+  .table th:nth-child(2) {
+    width: 20%;
+    /* Nombre */
+  }
+
+  .table td:nth-child(3),
+  .table th:nth-child(3) {
+    width: 25%;
+    /* Descripción (más espacio) */
+  }
+
+  .table td:nth-child(4),
+  .table th:nth-child(4) {
+    width: 10%;
+    /* Precio */
+  }
+
+  .table td:nth-child(5),
+  .table th:nth-child(5) {
+    width: 10%;
+    /* Stock */
+  }
+
+  .table td:nth-child(6),
+  .table th:nth-child(6) {
+    width: 25%;
+    /* Acciones (más espacio) */
+  }
+
+  .btn {
+    margin: 0 8px;
+    /* Espaciado entre botones */
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+
+    &.btn-warning {
+      background-color: #8e44ad;
+      color: white;
+
+      &:hover {
+        background-color: #6c3483;
+      }
+    }
+
+    &.btn-danger {
+      background-color: #dc3545;
+      color: white;
+
+      &:hover {
+        background-color: #c82333;
+      }
+    }
+
+    &.btn-primary {
+      background-color: #8e44ad;
+      color: white;
+
+      &:hover {
+        background-color: #6c3483;
+      }
+    }
+  }
+
+  button {
+    width: auto;
+    /* No ocupará todo el ancho */
+    margin-top: 10px;
+    /* Separación entre el botón y la tabla */
+  }
+}
