@@ -71,14 +71,12 @@ export class OrdersService {
     return this.http.get(this.apiUrl, { headers }); // Asegúrate de que la URL esté correcta según tu API
   }
 
-  deleteTicket(number: number): void {
+  deleteTicket(number: number): Observable<any> {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${this.authService.getToken()}`
     });
-
-    this.http.delete(`${this.apiUrl}/${number}`, { headers }).subscribe(() => {
-      console.log('Ticket eliminado');
-    });
+  
+    return this.http.delete(`${this.apiUrl}/${number}`, { headers });
   }
 
   resetCart() {
@@ -96,15 +94,13 @@ export class OrdersService {
     return this.http.get<any>(`${this.apiUrl}/${number}`, { headers });
   }
 
-  markInProgress(number: number) {
-    this.http.patch(`${this.apiUrl}/${number}`, { access_token: this.authService.getToken(), state: "enEnvio" }).subscribe(() => {
-      console.log('Ticket en envío');
-    });
+  markInProgress(number: number): Observable<any> {
+    const body = { access_token: this.authService.getToken(), state: "enEnvio" };
+    return this.http.patch(`${this.apiUrl}/${number}`, body);
   }
-
-  markAsSent(number: number) {
-    this.http.patch(`${this.apiUrl}/${number}`, { access_token: this.authService.getToken(), state: "enviado" }).subscribe(() => {
-      console.log('Ticket enviado');
-    });
+  
+  markAsSent(number: number): Observable<any> {
+    const body = { access_token: this.authService.getToken(), state: "enviado" };
+    return this.http.patch(`${this.apiUrl}/${number}`, body);
   }
 }

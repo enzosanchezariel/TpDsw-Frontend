@@ -61,8 +61,8 @@ export class OrderCardComponent {
   }
 
   delete() {
-    this.ordersService.deleteTicket(this.ticketInput.number);
-    window.location.reload();
+    this.ordersService.deleteTicket(this.ticketInput.number).subscribe(() => {
+      window.location.reload();});
   }
 
   confirmDelete(): void {
@@ -73,13 +73,13 @@ export class OrderCardComponent {
   }
 
   markInProgress() {
-    this.ordersService.markInProgress(this.ticketInput.number);
-    window.location.reload();
+    this.ordersService.markInProgress(this.ticketInput.number).subscribe(() => {
+      window.location.reload();});
   }
-
+  
   markAsSent() {
-    this.ordersService.markAsSent(this.ticketInput.number);
-    window.location.reload();
+    this.ordersService.markAsSent(this.ticketInput.number).subscribe(() => {
+      window.location.reload();});
   }
 
   getUser() {

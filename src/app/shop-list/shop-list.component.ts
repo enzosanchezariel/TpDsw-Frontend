@@ -81,9 +81,10 @@ export class ShopListComponent {
   }
 
   sendOrder() {
-    this.ordersService.sendCart().subscribe((Response) => {});
-    this.ordersService.resetCart();
-    this.cart = [];
-    location.reload();
+    this.ordersService.sendCart().subscribe((Response) => {
+      this.ordersService.resetCart();
+      this.cart = [];
+      location.reload();
+    });
   }
 }
