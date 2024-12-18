@@ -8,9 +8,10 @@ export class Product {
     public desc: string;
     public img: string;
     public stock: number;
+    public status: string;
     public prices: Price[] = [];
     public category: Category; 
-    public discount_id: number = 0 ; 
+    public discount: Discount; 
 
     constructor(
         id: number, 
@@ -19,16 +20,18 @@ export class Product {
         prices: Price[] = [],
         img: string, 
         stock: number, 
+        status: string,
         category: Category, 
-        discount_id: number,
+        discount: Discount,
     ) {
         this.id = id;
         this.name = name;
         this.desc = desc;
         this.img = img;
         this.stock = stock;
+        this.status = status;
         this.prices = prices;
         this.category = category;
-        this.discount_id = discount_id;
+        this.discount = discount;
     }
 }

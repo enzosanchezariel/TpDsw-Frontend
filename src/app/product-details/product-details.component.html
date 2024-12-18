@@ -1,8 +1,8 @@
 <div class="container">
-    <h1 class="top-title">{{product.name}}</h1>
+    <h1 class="top-title">{{ product.name }}</h1>
     <div class="card">
         <!-- Botón de eliminación en la esquina superior derecha -->
-        <button class="delete-product" (click)="confirmDelete()">
+        <button *ngIf="canViewAdmin" class="delete-product" (click)="confirmDelete()">
             <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash" width="24" height="24"
                 viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff0000" fill="none" stroke-linecap="round"
                 stroke-linejoin="round">
@@ -21,23 +21,55 @@
             </div>
             <div class="product-info">
                 <div class="info">
-                    <h1 class="inner-title">{{product.name}}</h1>
-                    <h2>${{product.prices.at(-1)?.price}}</h2>
-                    <p>{{product.desc}}</p>
+                    <h1 class="inner-title">{{ product.name }}</h1>
+                    <h2>
+                        <!-- Mostrar precio según si tiene descuento o no -->
+                        <ng-container>
+                            <span>
+                                ${{ product.prices.at(-1)?.price }}
+                            </span>
+                        </ng-container>
+                        <ng-template #noDiscount>
+                            ${{ product.prices.at(-1)?.price }}
+                        </ng-template>
+                    </h2>
+                    <p *ngIf="product.discount && product.discount.percentage">
+                        <strong>
+                            {{ product.discount.percentage }}% de descuento comprando más de
+                            {{ product.discount.units }} unidades.
+                        </strong>
+                    </p>
+                    <p>{{ product.desc }}</p>
                 </div>
-                <strong>Cantidad de unidades:</strong>
-                <input [(ngModel)]="amount" name="amount" type="number" placeholder="1" min="0" />
-                <div class="side-to-side">
+                <strong *ngIf="loggedIn">Cantidad de unidades:</strong>
+                <input *ngIf="loggedIn" [disabled]="checkIfAdded()" [(ngModel)]="amount" name="amount" type="number" placeholder="1" min="0" />
+                <div *ngIf="loggedIn" class="side-to-side">
                     <div>
                         <strong>Total:</strong>
-                        <h3>{{1 + 1}}</h3>
+                        <span *ngIf="product.discount">
+                            <h3>
+                                <span *ngIf="amount >= product.discount.units" style="text-decoration: line-through;">
+                                    ${{ originalTotal() }}
+                                </span>
+                                <span>${{ calculateTotal() }}</span>
+                            </h3>
+                        </span>
+                        <span *ngIf="!product.discount">
+                            <h3>
+                                <span>
+                                    ${{ calculateTotal() }}
+                                </span>
+                            </h3>
+                        </span>
                     </div>
-                    <div class="button-group">
-                        <button class="add-to-cart">Añadir al carrito</button>
+                    <div class="button-group" *ngIf="loggedIn">
+                        <button class="add-to-cart" (click)="addToCart()" [disabled]="amount <= 0 || checkIfAdded()">Añadir al carrito</button>
                         <button *ngIf="canViewEmployee" [routerLink]="['/edit-product', product.id]"
                             class="edit-product">Modificar Producto</button>
+                        </div>
                     </div>
-                </div>
+                <strong *ngIf="checkIfAdded()">Producto añadido al carrito</strong>
+                <strong *ngIf="!loggedIn">inicia sesión para realizar pedidos</strong>
             </div>
         </div>
     </div>

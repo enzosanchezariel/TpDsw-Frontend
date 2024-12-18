@@ -1,0 +1,70 @@
+<div class="container">
+    <section></section>
+    <section>
+        <h3>Carrito de compras</h3>
+        
+
+        <article *ngIf="cart.length > 0">
+            <table>
+                <thead>
+                <tr>
+                    <th scope="col">Producto</th>
+                    <th scope="col">Precio individual</th>
+                    <th scope="col">Descuento</th>
+                    <th scope="col">Unidades</th>
+                    <th scope="col">Sub total</th>
+                    <th scope="col"></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let cart_product_amount of cart">
+                    <th scope="row">{{cart_product_amount.product.name}}</th>
+                    <td>{{cart_product_amount.product.prices[cart_product_amount.product.prices.length - 1].price}}</td>
+                    <td>{{cart_product_amount.discount && cart_product_amount.amount >= cart_product_amount.discount.units ? cart_product_amount.discount.percentage : 0}}%</td>
+                    <td>{{cart_product_amount.amount}}</td>
+                    <td>{{getSubTotalCart(cart_product_amount)}}</td>
+                    <td><button (click)="removeFromCart(cart_product_amount.product.id)">Eliminar</button></td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <th scope="row">Total</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{getTotalCart()}}</td>
+                </tr>
+                </tfoot>
+            </table>
+            <button (click)="sendOrder()">Enviar orden</button>
+        </article>
+
+        <article *ngIf="cart.length === 0"><strong>No hay productos en el carrito</strong></article>
+
+
+    </section>
+    <section>
+        <h3>Órdenes en preparación</h3>
+        <div *ngFor="let ticket of tickets">
+            <app-order-card *ngIf="ticket.state === 'enPreparacion'" [cancellable]="true" [ticketInput]="ticket"></app-order-card>
+        </div>
+    </section>
+    <section>
+        <h3>Órdenes en envío</h3>
+        <div *ngFor="let ticket of tickets">
+            <app-order-card *ngIf="ticket.state === 'enEnvio'" [ticketInput]="ticket"></app-order-card>
+        </div>
+    </section>
+    <section>
+        <h3>Órdenes enviadas</h3>
+        <div *ngFor="let ticket of tickets">
+            <app-order-card *ngIf="ticket.state === 'enviado'" [ticketInput]="ticket"></app-order-card>
+        </div>
+    </section>
+    <section>
+        <h3>Órdenes rechazadas</h3>
+        <div *ngFor="let ticket of tickets">
+            <app-order-card *ngIf="ticket.state === 'rechazado'" [ticketInput]="ticket"></app-order-card>
+        </div>
+    </section>
+</div>
