@@ -93,7 +93,7 @@ export class ProductDetailsComponent {
 
   // Calcula el total original sin aplicar descuentos
   originalTotal(): number {
-    const price = this.product.prices.at(0)?.price ?? 0;
+    const price = this.product.prices.at(-1)?.price ?? 0;
     return price * this.amount;
   }
 

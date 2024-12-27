@@ -15,6 +15,31 @@
     margin: 20px auto;
   }
 
+  /* Contenedor del buscador */
+  .search-container {
+    margin-bottom: 20px;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: #8e44ad;
+    box-shadow: 0 0 0 2px rgba(142, 68, 173, 0.2);
+  }
+
+  .loading,
+  .no-users {
+    text-align: center;
+    color: #999;
+  }
+
   .table {
     width: 100%;
     border-collapse: collapse;
@@ -25,9 +50,11 @@
       text-align: left;
 
       th {
-        padding: 10px;
+        padding: 12px;
         cursor: pointer;
-        color: #4a0e4e;
+        color: #000000;
+        text-align: center;
+        vertical-align: middle;
       }
     }
 
@@ -36,13 +63,13 @@
         border-bottom: 1px solid #ccc;
 
         td {
-          padding: 10px;
+          padding: 12px;
           vertical-align: middle;
+          text-align: center;
         }
 
         .btn {
           margin-right: 15px;
-          /* Separar los botones */
         }
       }
     }
@@ -51,43 +78,36 @@
   .table td:nth-child(1),
   .table th:nth-child(1) {
     width: 10%;
-    /* ID */
   }
 
   .table td:nth-child(2),
   .table th:nth-child(2) {
     width: 15%;
-    /* Nombre */
   }
 
   .table td:nth-child(3),
   .table th:nth-child(3) {
     width: 15%;
-    /* Apellido */
   }
 
   .table td:nth-child(4),
   .table th:nth-child(4) {
     width: 20%;
-    /* Correo electrónico */
   }
 
   .table td:nth-child(5),
   .table th:nth-child(5) {
     width: 25%;
-    /* Rol (más espacio ahora) */
   }
 
   .table td:nth-child(6),
   .table th:nth-child(6) {
     width: 25%;
-    /* Acciones (más espacio ahora) */
   }
 
   select {
     padding: 5px;
     width: 100%;
-    /* Hacer que el select ocupe todo el ancho */
     border-radius: 4px;
     border: 1px solid #ccc;
     font-size: 14px;
@@ -95,7 +115,6 @@
 
   .btn {
     margin: 0 8px;
-    /* Espaciado entre botones */
     padding: 10px 15px;
     font-size: 14px;
     border-radius: 4px;

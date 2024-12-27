@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../services/category.service';
-import { ProductsService } from '../services/products.service';
 import { Category } from '../../entities/category.entity.js';
-import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-crud-category',
@@ -14,127 +12,160 @@ export class CrudCategory implements OnInit {
   editingCategoryId: number | null = null;
   addingCategory: boolean = false;
   newCategoryName: string = '';
-  newCategory: Category = new Category(0, '','');
-  searchTerm: string = '';  // Variable para búsqueda por nombre
-  sortField: string = '';  // Campo por el que se ordenará (id o name)
-  sortDirection: boolean = true; // Dirección de orden: true es ascendente, false es descendente
+  searchTerm: string = ''; // Variable para búsqueda por nombre
+  errorMessage: string | null = null; // Mensaje de error para el manejo centralizado
 
-  constructor(private categoryService: CategoryService, private productsService: ProductsService) {}
+  constructor(private categoryService: CategoryService) {}
 
   ngOnInit(): void {
     this.loadCategories();
   }
 
+  // Carga las categorías activas desde el servicio
   loadCategories(): void {
-  this.categoryService.getCategories().subscribe(
-    (response: any) => {
-      this.categories = response.data.filter((category: any) => category.status === 'active');
-      this.sortCategories(); 
-    },
-    (error) => {
-      console.error('Error al cargar las categorías:', error);
-    }
-  );
-}
-
-  // Función de ordenamiento
-  sort(field: string): void {
-    this.sortField = field;
-    this.sortDirection = !this.sortDirection;  // Cambiar la dirección de orden cada vez que se haga clic
-    this.sortCategories();  // Ordenar después de hacer clic
+    this.categoryService.getCategories().subscribe(
+      (response: any) => {
+        this.categories = response.data.filter((category: any) => category.status === 'active');
+      },
+      (error) => {
+        this.handleError('Error al cargar las categorías. Inténtelo nuevamente.');
+      }
+    );
   }
 
-  sortCategories(): void {
-    if (this.sortField) {
-      this.categories.sort((a, b) => {
-        if (a[this.sortField] < b[this.sortField]) return this.sortDirection ? -1 : 1;
-        if (a[this.sortField] > b[this.sortField]) return this.sortDirection ? 1 : -1;
-        return 0;
-      });
-    }
-  }
-
-  // Getter para filtrar categorías según el término de búsqueda
+  // Filtra categorías según el término de búsqueda
   get filteredCategories() {
     return this.categories.filter(category =>
       category.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 
+  // Inicia la edición de una categoría
   startEditCategory(category: any): void {
     this.editingCategoryId = category.id;
+    this.newCategoryName = category.name;  // Rellenamos el campo de nombre con los datos de la categoría
+    this.addingCategory = false;  // Desactivamos el modo de agregar categoría
   }
 
-  updateCategory(category: any): void {
-    if (category.name.trim() === '') {
-      alert('El nombre de la categoría no puede estar vacío.');
-      return;
-    }
-    
-    const idCategory = category.id.toString();
-    const updatedCategory = { id: idCategory, name: category.name, status: category.status }; // Crear un objeto de tipo Category
+  // Actualiza una categoría
+updateCategory(): void {
+  // Validación para asegurarse de que el nombre no esté vacío
+  if (this.newCategoryName.trim() === '') {
+    this.handleError('El nombre de la categoría no puede estar vacío.');
+    return;
+  }
 
-    this.categoryService.updateCategory(category.id, updatedCategory).subscribe(
-      () => {
-        this.editingCategoryId = null;
-        this.loadCategories();
-      },
-      (error) => {
-        console.error('Error al actualizar la categoría:', error);
+  // Verifica si ya existe una categoría con el mismo nombre y estado activo, pero diferente ID
+  this.categoryService.getCategories().subscribe(
+    (response: any) => {
+      const existingCategory = response.data.find(
+        (category: any) =>
+          category.name.toLowerCase() === this.newCategoryName.toLowerCase() &&
+          category.status === 'active' &&
+          category.id !== this.editingCategoryId // Asegurarse de que no se compare con la categoría actual
+      );
+
+      if (existingCategory) {
+        this.handleError(`Ya existe una categoría activa con el nombre "${this.newCategoryName}".`);
+        return;
       }
-    );
-  }
 
+      // Busca la categoría a actualizar
+      const categoryToUpdate = this.categories.find(
+        category => category.id === this.editingCategoryId
+      );
+
+      // Si se encuentra la categoría, se actualiza
+      if (categoryToUpdate) {
+        const updatedCategory = { ...categoryToUpdate, name: this.newCategoryName };
+
+        this.categoryService.updateCategory(updatedCategory.id, updatedCategory).subscribe(
+          () => {
+            this.editingCategoryId = null; // Resetear la categoría en edición
+            this.newCategoryName = ''; // Limpiar el nombre
+            this.loadCategories(); // Recargar las categorías
+          },
+          (error) => {
+            this.handleError('Error al actualizar la categoría. Inténtelo nuevamente.');
+          }
+        );
+      }
+    },
+    (error) => {
+      this.handleError('Error al cargar las categorías. Inténtelo nuevamente.');
+    }
+  );
+}
+
+  // Cancelar la edición
   cancelEdit(): void {
     this.editingCategoryId = null;
-    this.loadCategories(); // Recargar las categorías para restaurar el nombre original si se cancela la edición
-  }
-
-  createCategory(): void {
-    if (this.newCategoryName.trim() === '') {
-      alert('El nombre de la categoría no puede estar vacío.');
-      return;
-    }
-
-    const newCategory = new Category(0, this.newCategoryName, 'active'); // Crear un objeto de tipo Category
-    this.categoryService.createCategory(newCategory).subscribe(
-      (response) => {
-        this.loadCategories();
-        this.newCategoryName = '';
-        this.addingCategory = false;
-      },
-      (error) => {
-        console.error('Error al crear la categoría:', error);
-      }
-    );
-  }
-
-  cancelAdd(): void {
-    this.addingCategory = false;
     this.newCategoryName = '';
   }
 
-  confirmDeleteCategory(categoryId: number): void {
-    const confirmation = confirm('¿Estás seguro de que deseas eliminar esta categoría? Si existen productos asociados a esta categoría, también se eliminaran.');
-    if (confirmation) {
-      this.deleteCategory(categoryId);
-    } else{
-      console.log('Eliminación de la categoría cancelada');
+  // Crear una nueva categoría
+  createCategory(): void {
+    // Validación para asegurarse de que el nombre no esté vacío
+    if (this.newCategoryName.trim() === '') {
+      this.handleError('El nombre de la categoría no puede estar vacío.');
+      return;
     }
-  }
 
-  deleteCategory(categoryId: number): void {
-    const categoryToDeactivate = this.categories.find(category => category.id === categoryId);
-    if (categoryToDeactivate) {
-      this.categoryService.desactivateCategory(categoryId.toString(), categoryToDeactivate).subscribe(
-      (response) => {
-        console.log(response); // Esto debería mostrar "Category removed"
-        this.loadCategories(); // Recargar las categorías después de la eliminación
+    this.categoryService.getCategories().subscribe(
+      (response: any) => {
+        const existingCategory = response.data.find(
+          (category: any) =>
+            category.name.toLowerCase() === this.newCategoryName.toLowerCase() &&
+            category.status === 'active'
+        );
+
+        if (existingCategory) {
+          this.handleError(`Ya existe una categoría activa con el nombre "${this.newCategoryName}".`);
+          return;
+        }
+
+        const newCategory = new Category(0, this.newCategoryName, 'active');
+        this.categoryService.createCategory(newCategory).subscribe(
+          () => {
+            this.loadCategories();
+            this.newCategoryName = '';
+            this.addingCategory = false;
+          },
+          (error) => {
+            this.handleError('Error al crear la categoría. Inténtelo nuevamente.');
+          }
+        );
       },
       (error) => {
-        console.error('Error al eliminar la categoría:', error);
+        this.handleError('Error al cargar las categorías. Inténtelo nuevamente.');
       }
     );
   }
- }
+
+  // Método para confirmar la eliminación de una categoría
+  confirmDeleteCategory(categoryId: number): void {
+    if (confirm('¿Estás seguro de que deseas eliminar esta categoría?')) {
+      this.deleteCategory(categoryId);  // Llama a la función que elimina la categoría
+    }
+  }
+
+  // Función para eliminar una categoría
+  deleteCategory(categoryId: number): void {
+    this.categoryService.deleteCategory(categoryId.toString()).subscribe(
+      () => {
+        this.loadCategories(); // Recarga las categorías después de la eliminación
+      },
+      (error) => {
+        this.handleError('Error al eliminar la categoría. Inténtelo nuevamente.');
+      }
+    );
+  }
+
+  // Manejo centralizado de errores
+  handleError(message: string): void {
+    this.errorMessage = message;
+    setTimeout(() => {
+      this.errorMessage = null; // Limpiar el mensaje después de 5 segundos
+    }, 5000);
+  }
 }

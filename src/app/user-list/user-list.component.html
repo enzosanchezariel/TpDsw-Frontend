@@ -1,6 +1,12 @@
 <div class="container">
   <h2>Lista de Usuarios</h2>
 
+  <!-- Campo de búsqueda -->
+  <div class="search-container mb-3">
+    <input type="text" [(ngModel)]="searchQuery" (ngModelChange)="filterUsers()"
+      placeholder="Buscar usuarios por nombre o correo" class="search-input form-control" />
+  </div>
+
   <!-- Mostrar un cargador mientras se obtienen los usuarios -->
   <div *ngIf="isLoading" class="spinner-border" role="status">
     <span class="sr-only">Cargando...</span>
@@ -19,7 +25,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let user of users">
+      <tr *ngFor="let user of filteredUsers">
         <td>{{ user.dni }}</td>
         <td>{{ user.name }}</td>
         <td>{{ user.last_name }}</td>
@@ -35,4 +41,9 @@
       </tr>
     </tbody>
   </table>
+
+  <!-- Mensaje si no hay usuarios encontrados -->
+  <div *ngIf="!isLoading && filteredUsers.length === 0" class="no-users">
+    No se encontraron usuarios.
+  </div>
 </div>

@@ -15,6 +15,7 @@ export class EditProductComponent implements OnInit {
   originalProduct: Product | null = null;
   discounts: any[] = [];
   isLoading: boolean = true; // Control de carga
+  errorMessage: string | null = null; // Mensaje de error
 
   constructor(
     private fb: FormBuilder,
@@ -24,7 +25,7 @@ export class EditProductComponent implements OnInit {
     private discountService: DiscountService
   ) {
     this.productForm = this.fb.group({
-      name: [''],
+      name: ['', Validators.required],
       desc: [''],
       img: [''],
       stock: [0, Validators.required],
@@ -89,34 +90,70 @@ export class EditProductComponent implements OnInit {
   }
 
   updateProduct(): void {
-  if (this.originalProduct) {
-    const updatedProduct = {
-      id: this.originalProduct.id,
-      name: this.productForm.value.name,
-      desc: this.productForm.value.desc,
-      img: this.productForm.value.img,
-      stock: this.productForm.value.stock,
-      status: this.productForm.value.status,
-      prices: this.productForm.value.prices,
-      category: this.productForm.value.category,
-      discount: this.productForm.value.discount_id || null // Asigna null si no hay descuento
-    };
+    // Validación para asegurarse de que el nombre no esté vacío
+    if (this.productForm.value.name.trim() === '') {
+      this.handleError('El nombre del producto no puede estar vacío.');
+      return;
+    }
 
-    this.productsService.updateProduct(this.originalProduct.id.toString(), updatedProduct).subscribe(
+    // Verificar si ya existe un producto con el mismo nombre (exceptuando el producto actual)
+    this.productsService.getAllProducts().subscribe(
       (response) => {
-        console.log('Producto actualizado:', response);
-        alert('Producto modificado con éxito');
-        this.router.navigate(['/product-details', this.originalProduct?.id]);
+        const existingProduct = response.data.find(
+          (product: any) =>
+            product.name.toLowerCase() === this.productForm.value.name.toLowerCase() &&
+            product.status === 'active' &&
+            product.id !== this.originalProduct?.id // Asegurarse de que no se compare con el producto actual
+        );
+
+        if (existingProduct) {
+          this.handleError(`Ya existe un producto activo con el nombre "${this.productForm.value.name}".`);
+          return;
+        }
+
+        // Si no existe un producto con el mismo nombre, proceder con la actualización
+        if (this.originalProduct) {
+          const updatedProduct = {
+            id: this.originalProduct.id,
+            name: this.productForm.value.name,
+            desc: this.productForm.value.desc,
+            img: this.productForm.value.img,
+            stock: this.productForm.value.stock,
+            status: this.productForm.value.status,
+            prices: this.productForm.value.prices,
+            category: this.productForm.value.category,
+            discount: this.productForm.value.discount_id || null // Asigna null si no hay descuento
+          };
+
+          this.productsService.updateProduct(this.originalProduct.id.toString(), updatedProduct).subscribe(
+            (response) => {
+              console.log('Producto actualizado:', response);
+              alert('Producto modificado con éxito');
+              this.router.navigate(['/product-details', this.originalProduct?.id]);
+            },
+            (error) => {
+              console.error('Error al modificar el producto:', error);
+              alert('Error al modificar el producto');
+            }
+          );
+        }
       },
       (error) => {
-        console.error('Error al modificar el producto:', error);
-        alert('Error al modificar el producto');
+        console.error('Error al cargar los productos:', error);
+        alert('Error al cargar los productos.');
       }
     );
   }
-}
 
   cancel(): void {
     this.router.navigate(['/product-details', this.originalProduct?.id]);
+  }
+
+  // Manejo centralizado de errores
+  handleError(message: string): void {
+    this.errorMessage = message;
+    setTimeout(() => {
+      this.errorMessage = null; // Limpiar el mensaje después de 5 segundos
+    }, 5000);
   }
 }

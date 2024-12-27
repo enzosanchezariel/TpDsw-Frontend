@@ -1,25 +1,32 @@
 <div class="container">
-  <h2>Lista de Productos</h2>
+  <h2>Gestión de Productos</h2>
+
+  <!-- Barra de búsqueda -->
+  <div class="form-group mb-3">
+    <label for="searchTerm">Buscar Producto:</label>
+    <input type="text" id="searchTerm" [(ngModel)]="searchTerm" class="form-control"
+      placeholder="Ingrese el nombre del producto" (input)="filterProducts()" />
+  </div>
 
   <!-- Tabla de productos -->
-  <table class="table mt-3" *ngIf="products.length > 0">
+  <table class="table mt-3" *ngIf="filteredProducts.length > 0">
     <thead>
       <tr>
         <th>ID</th>
         <th>Nombre</th>
         <th>Descripción</th>
-        <th>Precio</th>
         <th>Stock</th>
+        <th>Precio</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let product of products">
+      <tr *ngFor="let product of filteredProducts">
         <td>{{ product.id }}</td>
         <td>{{ product.name }}</td>
         <td>{{ product.desc }}</td>
-        <td>{{ product.prices.at(0).price }}</td>
-        <td>{{ product.stock}}</td>
+        <td>{{ product.stock }}</td>
+        <td>${{ product.prices.at(-1)?.price }}</td>
         <td>
           <button class="btn btn-warning" [routerLink]="['/edit-product', product.id]">Modificar</button>
           <button class="btn btn-danger" (click)="confirmDelete(product)">Eliminar</button>
@@ -29,5 +36,30 @@
   </table>
 
   <!-- Botón para agregar un producto -->
-  <button class="btn btn-primary mt-3"  [routerLink]="['/create-product']">Agregar Producto</button>
+  <button class="btn btn-primary mt-3" [routerLink]="['/create-product']">Agregar Producto</button>
+
+  <!-- Mensaje dinámico -->
+  <div *ngIf="message" class="alert alert-info" role="alert">
+    {{ message }}
+  </div>
+
+  <!-- Confirmación de eliminación -->
+  <div *ngIf="product" class="modal show" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="modal-title">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-title" class="modal-title">Confirmar eliminación</h5>
+        </div>
+        <div class="modal-body">
+          <p>¿Está seguro de que desea eliminar el producto "{{ product.name }}"?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="deleteProduct()">Eliminar</button>
+          <button type="button" class="btn btn-secondary" (click)="cancel()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+

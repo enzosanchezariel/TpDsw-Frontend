@@ -1,9 +1,17 @@
 <div class="container">
   <h1>Modificar Producto</h1>
+
   <form [formGroup]="productForm" (ngSubmit)="updateProduct()">
     <div>
       <label for="name">Nombre:</label>
-      <input type="text" id="name" formControlName="name" />
+      <input type="text" id="name" formControlName="name"
+        [ngClass]="{'is-invalid': productForm.get('name')?.invalid && (productForm.get('name')?.touched || productForm.get('name')?.dirty)}" />
+      <!-- Mostrar un mensaje de error si el campo 'name' es inválido -->
+      <div
+        *ngIf="productForm.get('name')?.invalid && (productForm.get('name')?.touched || productForm.get('name')?.dirty)"
+        class="invalid-feedback">
+        El nombre del producto es obligatorio.
+      </div>
     </div>
 
     <div>
@@ -31,7 +39,12 @@
       </select>
     </div>
 
-    <button type="submit">Modificar Producto</button>
+    <button type="submit" [disabled]="productForm.invalid">Modificar Producto</button>
     <button type="button" (click)="cancel()">Cancelar</button>
+
+    <!-- Mostrar el mensaje de error global si existe -->
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
   </form>
 </div>

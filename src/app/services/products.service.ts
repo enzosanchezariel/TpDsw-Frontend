@@ -24,15 +24,14 @@ export class ProductsService {
   }
 
   createProduct(product: Product): Observable<any> {
-    (product as any).access_token = this.authService.getToken()
-    const url = this.baseUrl + 'products'; // Asegúrate de que la ruta sea correcta
-    return this.http.post<any>(url, product); // Envía el producto al backend
+    (product as any).access_token = this.authService.getToken();
+    const url = this.baseUrl + 'products';
+    return this.http.post<any>(url, product);
   }
 
-  // Método para obtener todas las categorías (agrega este método)
   getCategories(): Observable<Category[]> {
-    const url = this.baseUrl + 'categories'; // Ajusta según la ruta de tu API
-    return this.http.get<Category[]>(url); // Asegúrate de que el tipo de retorno sea Category[]
+    const url = this.baseUrl + 'categories';
+    return this.http.get<Category[]>(url);
   }
 
   updateProduct(id: string, product: Product): Observable<any> {
@@ -41,11 +40,11 @@ export class ProductsService {
   }
 
   searchProducts(nameQuery: string): Observable<any> {
-    const url = `${this.baseUrl}products/search?name=${nameQuery}`;  // Construir la URL con el parámetro 'name'
-    return this.http.get<any>(url);  // Realizar la solicitud GET
+    const url = `${this.baseUrl}products/search?name=${nameQuery}`;
+    return this.http.get<any>(url);
   }
 
-  deleteProduct(id:string): Observable<any>{
+  deleteProduct(id: string): Observable<any> {
     const url = this.baseUrl + `products/${id}`;
     return this.http.delete<any>(url);
   }
@@ -55,4 +54,9 @@ export class ProductsService {
     return this.http.patch<any>(url, product);
   }
 
+  // Nuevo método: obtener todos los productos por nombre
+  getAllProductsByName(name: string): Observable<Product[]> {
+    const url = `${this.baseUrl}products?name=${encodeURIComponent(name)}`;
+    return this.http.get<Product[]>(url);
+  }
 }

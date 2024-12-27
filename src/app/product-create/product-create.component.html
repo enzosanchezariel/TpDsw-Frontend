@@ -4,27 +4,27 @@
   <form [formGroup]="productForm" (ngSubmit)="createProduct()">
     <div class="form-group">
       <label for="name">Nombre</label>
-      <input type="text" id="name" formControlName="name" required/>
+      <input type="text" id="name" formControlName="name" required />
     </div>
 
     <div class="form-group">
       <label for="desc">Descripción</label>
-      <textarea id="desc" formControlName="desc" required></textarea>
+      <textarea id="desc" formControlName="desc"></textarea>
     </div>
 
     <div class="form-group">
       <label for="img">URL de la Imagen</label>
-      <input type="text" id="img" formControlName="img" required/>
+      <input type="text" id="img" formControlName="img" />
     </div>
 
     <div class="form-group">
       <label for="stock">Stock</label>
-      <input type="number" id="stock" formControlName="stock" required/>
+      <input type="number" id="stock" formControlName="stock" required />
     </div>
 
     <div class="form-group">
       <label for="price">Precio</label>
-      <input type="number" id="price" formControlName="price" required/>
+      <input type="number" id="price" formControlName="price" required />
     </div>
 
     <div class="form-group">
@@ -36,6 +36,29 @@
       </select>
     </div>
 
-    <button type="submit" class="button">Crear Producto</button>
+    <!-- Cartel de error -->
+    <div class="alert" *ngIf="errorMessage">
+      {{ errorMessage }}
+    </div>
+
+    <button type="submit">Crear Producto</button>
   </form>
+
+  <!-- Modal de éxito -->
+  <div *ngIf="successModalVisible" class="modal show" tabindex="-1" role="dialog" style="display: block;"
+    aria-labelledby="modal-title">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-title" class="modal-title">¡Producto creado con éxito!</h5>
+        </div>
+        <div class="modal-body">
+          <p>El producto ha sido creado exitosamente.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="closeSuccessModal()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

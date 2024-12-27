@@ -5,7 +5,6 @@ import { ProductsService } from '../services/products.service';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../../entities/category.entity';
 import { Product } from '../../entities/product.entity';
-import { Price } from '../../entities/price.entity';
 
 @Component({
   selector: 'app-product-create',
@@ -15,6 +14,9 @@ import { Price } from '../../entities/price.entity';
 export class ProductCreateComponent implements OnInit {
   productForm: FormGroup;
   categories: any[] = [];
+  products: any[] = [];
+  public errorMessage: string | null = null; // Para los mensajes de error
+  public successModalVisible: boolean = false; // Control del modal de éxito
 
   constructor(
     private fb: FormBuilder,
@@ -23,92 +25,123 @@ export class ProductCreateComponent implements OnInit {
     private router: Router
   ) {
     this.productForm = this.fb.group({
-      name: [''],
+      name: ['', Validators.required],
       desc: [''],
       img: [''],
       stock: [0, [Validators.required, Validators.min(0)]],
       price: [0, [Validators.required, Validators.min(0)]],
-      category: [null], // Aquí se almacena el ID de la categoría seleccionada
+      category: [null, Validators.required], // ID de la categoría, obligatorio
     });
   }
 
   ngOnInit(): void {
     this.loadCategories();
+    this.loadProducts();
   }
 
   loadCategories(): void {
     this.categoryService.getCategories()
       .subscribe(
         (response: any) => {
-          console.log('Respuesta de la API:', response);
           if (Array.isArray(response)) {
             this.categories = response;
           } else if (response && response.data && Array.isArray(response.data)) {
             this.categories = response.data;
           } else {
-            console.error('Respuesta de categorías inesperada:', response);
+            this.handleError('Error al cargar las categorías. Respuesta inesperada.');
           }
-          console.log('Categorías cargadas:', this.categories);
         },
         (error) => {
-          console.error('Error al cargar las categorías:', error);
+          this.handleError('Error al cargar las categorías. Por favor, inténtelo nuevamente.');
         }
       );
+  }
+
+  loadProducts(): void {
+    this.productsService.getAllProducts().subscribe(
+      (response: any) => {
+        if (Array.isArray(response)) {
+          this.products = response;
+        } else if (response && response.data && Array.isArray(response.data)) {
+          this.products = response.data;
+        } else {
+          this.handleError('Error al cargar los productos. Respuesta inesperada.');
+        }
+      },
+      (error) => {
+        this.handleError('Error al cargar los productos. Por favor, inténtelo nuevamente.');
+      }
+    );
   }
 
   createProduct(): void {
     const productData = this.productForm.value;
 
-    // Asegúrate de que se ha seleccionado una categoría
-    if (!productData.category) {
-        console.error('No se ha seleccionado una categoría para el producto');
-        return;
+    const missingFields = [];
+    if (!productData.name) missingFields.push('Nombre');
+    if (!productData.category) missingFields.push('Categoría');
+    if (!productData.price || productData.price <= 0) missingFields.push('Precio');
+    if (!productData.stock || productData.stock < 0) missingFields.push('Stock');
+
+    if (missingFields.length > 0) {
+      this.handleError(`Faltan los siguientes campos obligatorios: ${missingFields.join(', ')}.`);
+      return;
     }
 
-    // Busca la categoría seleccionada por su ID en el array de categorías
+    const existingProduct = this.products.find(
+      (product) => product.name.toLowerCase() === productData.name.toLowerCase()
+    );
+
+    if (existingProduct) {
+      this.handleError(`Ya existe un producto con el nombre '${productData.name}'. Por favor, elija otro nombre.`);
+      return;
+    }
+
     const selectedCategory = this.categories.find(category => category.id === Number(productData.category));
-    console.log('Categorías cargadas:', this.categories);
-    console.log('Categoría seleccionada:', selectedCategory);
 
-    // Verifica si la categoría fue encontrada
     if (!selectedCategory) {
-        console.error('Categoría no encontrada para el producto:', productData.category);
-        return;
+      this.handleError(`La categoría seleccionada (${productData.category}) no es válida.`);
+      return;
     }
 
-    // Establece el categoryId
-    productData.categoryId = selectedCategory.id; // Establecer categoryId
+    productData.categoryId = selectedCategory.id;
 
-    // Crea el nuevo producto incluyendo la categoría encontrada (solo el ID de la categoría)
     const newProduct = new Product(
-        0, // id, se usa 0 para indicar un nuevo producto
-        productData.name, // name, del formulario
-        productData.desc, // desc, del formulario
-        productData.price,
-        productData.img, // img, del formulario
-        productData.stock, // stock, del formulario
-        productData.status,
-        productData.categoryId, // Solo el ID de la categoría
-        productData.discount // discount, del formulario
+      0,
+      productData.name,
+      productData.desc,
+      productData.price,
+      productData.img,
+      productData.stock,
+      productData.status,
+      productData.categoryId,
+      productData.discount
     );
 
-    console.log('Nuevo producto:', newProduct);
-    // Llama al servicio para crear el producto
     this.productsService.createProduct(newProduct).subscribe(
-        (response: Product) => {
-            console.log('Producto creado:', response);
-            this.router.navigate(['/']);
-        },
-        (error) => {
-            console.error('Error al crear el producto:', error);
-            if (error.error && error.error.message) {
-              // Mostrar mensaje de error específico al usuario
-              alert('Error al crear el producto: ' + error.error.message);
-            } else {
-              // Mostrar mensaje de error genérico al usuario
-              alert('Error al crear el producto. Por favor, inténtelo nuevamente.');
-            }
-                }
+      (response: Product) => {
+        console.log('Producto creado:', response);
+        this.successModalVisible = true; // Mostrar el modal de éxito
+      },
+      (error) => {
+        if (error.error && error.error.message) {
+          this.handleError('Error al crear el producto: ' + error.error.message);
+        } else {
+          this.handleError('Error al crear el producto. Por favor, inténtelo nuevamente.');
+        }
+      }
     );
+  }
+
+  closeSuccessModal(): void {
+    this.successModalVisible = false;
+    this.router.navigate(['/']); // Redirigir después de cerrar el modal
+  }
+
+  handleError(message: string): void {
+    this.errorMessage = message;
+    setTimeout(() => {
+      this.errorMessage = null;
+    }, 5000);
   }
 }
