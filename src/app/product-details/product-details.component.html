@@ -41,9 +41,9 @@
                     </p>
                     <p>{{ product.desc }}</p>
                 </div>
-                <strong *ngIf="loggedIn">Cantidad de unidades:</strong>
-                <input *ngIf="loggedIn" [disabled]="checkIfAdded()" [(ngModel)]="amount" name="amount" type="number" placeholder="1" min="0" />
-                <div *ngIf="loggedIn" class="side-to-side">
+                <strong *ngIf="loggedIn && product.status === 'active'">Cantidad de unidades:</strong>
+                <input *ngIf="loggedIn && product.status === 'active'" [disabled]="checkIfAdded()" [(ngModel)]="amount" name="amount" type="number" placeholder="1" min="0" [max]="product.stock"/>
+                <div *ngIf="loggedIn && product.status === 'active'" class="side-to-side">
                     <div>
                         <strong>Total:</strong>
                         <span *ngIf="product.discount">
@@ -69,7 +69,8 @@
                         </div>
                     </div>
                 <strong *ngIf="checkIfAdded()">Producto añadido al carrito</strong>
-                <strong *ngIf="!loggedIn">inicia sesión para realizar pedidos</strong>
+                <strong *ngIf="!loggedIn && product.status === 'active'">inicia sesión para realizar pedidos</strong>
+                <strong *ngIf="product.status !== 'active'">Producto eliminado</strong>
             </div>
         </div>
     </div>
