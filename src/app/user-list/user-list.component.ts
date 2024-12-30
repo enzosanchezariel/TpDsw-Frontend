@@ -13,6 +13,9 @@ export class UserListComponent implements OnInit {
   roles: string[] = ['cliente', 'empleado', 'admin'];
   isLoading: boolean = true;
   searchQuery: string = '';
+  showModal: boolean = false;
+  showSuccessModal: boolean = false; // Variable para mostrar el modal de éxito
+  selectedUser: User | null = null;
 
   constructor(private userService: UserService) {}
 
@@ -24,7 +27,7 @@ export class UserListComponent implements OnInit {
     this.userService.getUsers().subscribe(
       (response) => {
         this.users = response.data;
-        this.filteredUsers = this.users;  // Inicializar la lista filtrada
+        this.filteredUsers = this.users;
         this.isLoading = false;
       },
       (error) => {
@@ -41,22 +44,38 @@ export class UserListComponent implements OnInit {
         user.email.toLowerCase().includes(this.searchQuery.toLowerCase())
       );
     } else {
-      this.filteredUsers = this.users;  // Si no hay búsqueda, mostrar todos
+      this.filteredUsers = this.users;
     }
   }
 
-  changeRole(user: User): void {
-    const updatedUser = { ...user, role: user.role };
+  openConfirmationModal(user: User): void {
+    this.selectedUser = { ...user }; // Clonar el usuario para evitar modificar el original antes de confirmar
+    this.showModal = true;
+  }
 
-    this.userService.updateUserData(user.email, updatedUser).subscribe(
-      (response) => {
-        alert('Rol actualizado con éxito');
-        this.loadUsers();  // Recargar la lista de usuarios
-      },
-      (error) => {
-        console.error('Error al actualizar el rol:', error);
-        alert('Error al actualizar el rol');
-      }
-    );
+  closeModal(): void {
+    this.showModal = false;
+    this.selectedUser = null;
+  }
+
+  closeSuccessModal(): void {
+    this.showSuccessModal = false;
+    this.loadUsers(); // Recargar los usuarios después de confirmar el cambio
+  }
+
+  confirmRoleChange(): void {
+    if (this.selectedUser) {
+      this.userService.updateUserData(this.selectedUser.email, this.selectedUser).subscribe(
+        (response) => {
+          // Mostrar el modal de éxito
+          this.showModal = false; // Cerrar el modal de confirmación
+          this.showSuccessModal = true; // Mostrar el modal de éxito
+        },
+        (error) => {
+          console.error('Error al actualizar el rol:', error);
+          alert('Error al actualizar el rol');
+        }
+      );
+    }
   }
 }

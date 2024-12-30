@@ -28,6 +28,7 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
   canViewAdmin: boolean = false;
   canViewEmployee: boolean = false;
+  logoutMessage: boolean = false; // Nueva propiedad para el mensaje
   user: User = new User(0, '', '', '', '', '', '', '', ''); 
 
   categories: Category[] = [];
@@ -106,9 +107,15 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   }
 
   logout(): void {
-    this.authService.logout();
-    alert('Sesión cerrada');
+    this.authService.logout(); // Cierra la sesión
+    this.logoutMessage = true; // Muestra el cartel de cierre de sesión
   }
+
+  redirectToHome(): void {
+    this.logoutMessage = false; // Oculta el cartel antes de redirigir
+    this.router.navigate(['/home']); // Redirige al menú principal
+  }
+
 
   cartEffect(): void {
     const cartIcon = document.getElementById('cart-icon');

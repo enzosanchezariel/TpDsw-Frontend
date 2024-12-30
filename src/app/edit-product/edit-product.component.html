@@ -1,50 +1,62 @@
-<div class="container">
-  <h1>Modificar Producto</h1>
+<div class="product-form">
+  <h2>Modificar Producto</h2>
 
   <form [formGroup]="productForm" (ngSubmit)="updateProduct()">
-    <div>
-      <label for="name">Nombre:</label>
+    <div class="form-group">
+      <label for="name">Nombre</label>
       <input type="text" id="name" formControlName="name"
         [ngClass]="{'is-invalid': productForm.get('name')?.invalid && (productForm.get('name')?.touched || productForm.get('name')?.dirty)}" />
-      <!-- Mostrar un mensaje de error si el campo 'name' es inválido -->
-      <div
-        *ngIf="productForm.get('name')?.invalid && (productForm.get('name')?.touched || productForm.get('name')?.dirty)"
-        class="invalid-feedback">
-        El nombre del producto es obligatorio.
-      </div>
     </div>
 
-    <div>
-      <label for="desc">Descripción:</label>
+    <div class="form-group">
+      <label for="desc">Descripción</label>
       <textarea id="desc" formControlName="desc"></textarea>
     </div>
 
-    <div>
-      <label for="price">Precio:</label>
+    <div class="form-group">
+      <label for="price">Precio</label>
       <input type="number" id="price" formControlName="prices" />
     </div>
 
-    <div>
-      <label for="img">Imagen:</label>
+    <div class="form-group">
+      <label for="img">Imagen</label>
       <input type="text" id="img" formControlName="img" />
     </div>
 
-    <div>
-      <label for="discount">Descuento:</label>
+    <div class="form-group">
+      <label for="discount">Descuento</label>
       <select id="discount" formControlName="discount_id">
         <option *ngFor="let discount of discounts" [value]="discount.id">
           {{ discount.percentage }}% de descuento en {{ discount.units }} unidad/es
         </option>
-        <option value="null">Producto sin descuentos</option> <!-- Opción para no asignar descuento -->
+        <option value="null">Producto sin descuentos</option>
       </select>
     </div>
 
-    <button type="submit" [disabled]="productForm.invalid">Modificar Producto</button>
-    <button type="button" (click)="cancel()">Cancelar</button>
-
-    <!-- Mostrar el mensaje de error global si existe -->
+    <!-- Cartel de error -->
     <div *ngIf="errorMessage" class="alert alert-danger">
       {{ errorMessage }}
     </div>
+
+    <button type="submit">Modificar Producto</button>
+    <button class="cancel" type="button" (click)="cancel()">Cancelar</button>
   </form>
+
+  <!-- Modal de éxito -->
+  <div *ngIf="successModalVisible" class="modal show" tabindex="-1" role="dialog" style="display: block;"
+    aria-labelledby="modal-title">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-title" class="modal-title">¡Producto modificado con éxito!</h5>
+        </div>
+        <div class="modal-body">
+          <p>El producto ha sido modificado exitosamente.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="closeSuccessModal()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

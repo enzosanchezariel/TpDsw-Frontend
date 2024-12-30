@@ -1,6 +1,68 @@
 <div class="container">
   <h2>Gestión de Categorías</h2>
 
+  <!-- Modal de confirmación de eliminación -->
+  <div *ngIf="showDeleteConfirmation" class="modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmar eliminación</h5>
+      </div>
+      <div class="modal-body">
+        <p>¿Está seguro de que desea eliminar la categoria "{{ categoryToDeleteName }}"?</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" (click)="deleteCategory(deleteCategoryId!)">Eliminar</button>
+        <button class="btn btn-secondary" (click)="cancelDelete()">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensaje de categoría creada con éxito -->
+  <div *ngIf="categoryCreatedSuccess" class="modal success-message">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h5 class="modal-title">Categoría Creada</h5>
+        <button class="close" (click)="categoryCreatedSuccess = false">×</button>
+      </div>
+      <div class="modal-body">
+        <p>La categoría se ha creado con éxito.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="closeCreateSuccess()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensaje de categoría modificada con éxito -->
+  <div *ngIf="categoryUpdatedSuccess" class="modal success-message">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h5 class="modal-title">Modificación exitosa</h5>
+      </div>
+      <div class="modal-body">
+        <p>La categoría se ha modificado con éxito.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="closeUpdateSuccess()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mensaje de categoría eliminada con éxito -->
+  <div *ngIf="categoryDeletedSuccess" class="modal success-message">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminación exitosa</h5>
+      </div>
+      <div class="modal-body">
+        <p>La categoría se ha eliminado con éxito.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="closeDeleteSuccess()">Cerrar</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Barra de búsqueda -->
   <div class="form-group mb-3">
     <label for="searchTerm">Buscar Categoría:</label>
@@ -24,7 +86,7 @@
         <td>
           <!-- Botones de acciones (editar, eliminar) -->
           <button class="btn btn-warning" (click)="startEditCategory(category)">Editar</button>
-          <button class="btn btn-danger" (click)="confirmDeleteCategory(category.id)">Eliminar</button>
+          <button class="btn btn-danger" (click)="confirmDeleteCategory(category.id, category.name)">Eliminar</button>
         </td>
       </tr>
     </tbody>

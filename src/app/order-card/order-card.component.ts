@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Ticket } from '../../entities/ticket.entity';
 import { CommonModule } from '@angular/common';
 import { Product } from '../../entities/product.entity';
@@ -10,7 +10,7 @@ import { OrdersService } from '../services/orders.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './order-card.component.html',
-  styleUrl: './order-card.component.scss'
+  styleUrls: ['./order-card.component.scss']
 })
 export class OrderCardComponent {
 
@@ -20,10 +20,25 @@ export class OrderCardComponent {
   @Input() markInProgressButton?: boolean = false;
   @Input() markSentButton?: boolean = false;
   @Input() showUser?: boolean = false;
-  
-  constructor(
-    private ordersService: OrdersService,
-  ) {}
+
+  showDeleteModal: boolean = false;
+
+  constructor(private ordersService: OrdersService) {}
+
+  openDeleteModal(): void {
+    this.showDeleteModal = true;
+  }
+
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+  }
+
+  deleteOrder(): void {
+    this.ordersService.deleteTicket(this.ticketInput.number).subscribe(() => {
+      this.closeDeleteModal();
+      window.location.reload();
+    });
+  }
 
   getProdutPriceWithDate(prod: Product) {
     const targetDate = new Date(this.ticketInput.date);
@@ -60,30 +75,19 @@ export class OrderCardComponent {
     return total;
   }
 
-  delete() {
-    this.ordersService.deleteTicket(this.ticketInput.number).subscribe(() => {
-      window.location.reload();});
-  }
-
-  confirmDelete(): void {
-    const confirmed = window.confirm(`¿Estás seguro de que deseas eliminar el pedido?`);
-    if (confirmed) {
-      this.delete();
-    }
-  }
-
   markInProgress() {
     this.ordersService.markInProgress(this.ticketInput.number).subscribe(() => {
-      window.location.reload();});
+      window.location.reload();
+    });
   }
   
   markAsSent() {
     this.ordersService.markAsSent(this.ticketInput.number).subscribe(() => {
-      window.location.reload();});
+      window.location.reload();
+    });
   }
 
   getUser() {
     return this.ticketInput.user;
   }
-  
 }
