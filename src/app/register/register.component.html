@@ -5,18 +5,21 @@
     <div class="form-group">
       <label for="dni">DNI</label>
       <input type="text" id="dni" class="form-control" required [(ngModel)]="registerData.dni" name="dni"
+        (keypress)="validateNumber($event)"
         #dni="ngModel" />
     </div>
 
     <div class="form-group">
       <label for="name">Nombre</label>
       <input type="text" id="name" class="form-control" required [(ngModel)]="registerData.name" name="name"
+        (keypress)="validateText($event)"
         #name="ngModel" />
     </div>
 
     <div class="form-group">
       <label for="second_name">Apellido</label>
       <input type="text" id="second_name" class="form-control" required [(ngModel)]="registerData.last_name"
+        (keypress)="validateText($event)"
         name="second_name" #second_name="ngModel" />
     </div>
 
@@ -29,11 +32,15 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="phone">Teléfono</label>
-      <input type="text" id="phone" class="form-control" required [(ngModel)]="registerData.phone" name="phone"
-        #phone="ngModel" />
-    </div>
+<div class="form-group">
+  <label for="phone">Teléfono</label>
+  <input type="text" id="phone" class="form-control" required [(ngModel)]="registerData.phone" name="phone"
+    (keypress)="validateNumber($event)"
+    #phone="ngModel" />
+  <div *ngIf="phone.invalid && phone.touched" class="error-message">
+    <strong>Campo obligatorio</strong>
+  </div>
+</div>
 
     <div class="form-group">
       <label for="address">Dirección</label>
@@ -77,4 +84,21 @@
       </p>
     </div>
   </form>
+
+  <div *ngIf="showModal" class="modal show" tabindex="-1" role="dialog" style="display: block;"
+    aria-labelledby="modal-title">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-title" class="modal-title">{{modalTitle}}</h5>
+        </div>
+        <div class="modal-body">
+          <p>{{modalMessage}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="closeModal()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

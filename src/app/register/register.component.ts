@@ -24,6 +24,24 @@ export class RegisterComponent {
 
 
   constructor(private http: HttpClient, private router: Router) {}
+  
+  showModal: boolean = false;
+  modalTitle: string = '';
+  modalMessage: string = '';
+
+  validateNumber(event: KeyboardEvent): void {
+    const char = event.key;
+    if (!/^\d$/.test(char)) {
+      event.preventDefault();
+    }
+  }
+
+  validateText(event: KeyboardEvent): void {
+    const char = event.key;
+    if (!/^[a-zA-Z\s]$/.test(char)) {
+      event.preventDefault();
+    }
+  }
 
   onSubmit() {
     if (this.registerData.password !== this.registerData.confirmPassword) {
@@ -39,10 +57,19 @@ export class RegisterComponent {
         },
         error => {
           console.error('Error en el registro', error);
+          if (error.status === 400) {
+            this.modalTitle = 'Error en el registro';
+            this.modalMessage = 'Usuario ya existe';
+            this.showModal = true;
+          }
         }
       );
     } else {
       console.error('Faltan campos obligatorios');
     }
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 }
