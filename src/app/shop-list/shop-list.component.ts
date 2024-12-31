@@ -19,6 +19,10 @@ export class ShopListComponent {
   tickets: Ticket[] = []
   cart: ProductAmount[] = []
 
+  showModal: boolean = false;
+  modalTitle: string = '';
+  modalMessage: string = '';
+
   constructor(
     private ordersService: OrdersService,
     private productsService: ProductsService,
@@ -81,10 +85,23 @@ export class ShopListComponent {
   }
 
   sendOrder() {
-    this.ordersService.sendCart().subscribe((Response) => {
-      this.ordersService.resetCart();
-      this.cart = [];
-      location.reload();
-    });
+    this.ordersService.sendCart().subscribe(
+      (response) => {
+        this.ordersService.resetCart();
+        this.cart = [];
+        location.reload();
+      },
+      (error) => {
+        if (error.status === 400 && error.error.errorCode === 'not_enough_stock') {
+          this.modalTitle = 'Error en el pedido';
+          this.modalMessage = 'No hay suficiente stock para los productos seleccionados';
+          this.showModal = true;
+        }
+      }
+    );
+  }
+
+  closeModal() {
+    this.showModal = false;
   }
 }

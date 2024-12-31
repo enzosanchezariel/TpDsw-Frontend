@@ -67,4 +67,21 @@
             <app-order-card *ngIf="ticket.state === 'rechazado'" [ticketInput]="ticket"></app-order-card>
         </div>
     </section>
+
+    <div *ngIf="showModal" class="modal show" tabindex="-1" role="dialog" style="display: block;"
+    aria-labelledby="modal-title">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-title" class="modal-title">{{modalTitle}}</h5>
+        </div>
+        <div class="modal-body">
+          <p>{{modalMessage}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="closeModal()">Aceptar</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
