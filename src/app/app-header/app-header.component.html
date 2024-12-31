@@ -95,3 +95,21 @@
             routerLinkActive="active" class="category-button">{{category.name}}</button>
     </div>
 </div>
+
+<!-- Cartel de cierre de sesión -->
+<div *ngIf="logoutMessage" class="modal show" tabindex="-1" role="dialog" style="display: block;"
+    aria-labelledby="modal-title">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="modal-title" class="modal-title">Cierre de sesión</h5>
+            </div>
+            <div class="modal-body">
+                <p>Has cerrado sesión exitosamente.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" (click)="redirectToHome()">Ir al inicio</button>
+            </div>
+        </div>
+    </div>
+</div>

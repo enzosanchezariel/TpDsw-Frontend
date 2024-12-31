@@ -9,15 +9,23 @@ import { Discount } from '../../entities/discount.entity';
   styleUrls: ['./crud-discount.component.scss']
 })
 export class CrudDiscountComponent implements OnInit {
-  discounts: any[] = [];
+  discounts: Discount[] = [];
   discountForm: FormGroup;
   showForm: boolean = false; // Controla si el formulario está visible
   editingDiscount: boolean = false; // Controla si estamos editando un descuento
-  discountToEdit: any = null; // Descuento que se está editando
+  discountToEdit: Discount | null = null; // Descuento que se está editando
+  discountToDelete: Discount | null = null; // Descuento que se está eliminando
+  public errorMessage: string | null = null; // Para los mensajes de error
+
+  // Control de los modales de éxito
+  public showCreateSuccess: boolean = false;
+  public showUpdateSuccess: boolean = false;
+  public showDeleteSuccess: boolean = false;
 
   constructor(
     private fb: FormBuilder, 
-    private discountService: DiscountService) {
+    private discountService: DiscountService
+  ) {
     this.discountForm = this.fb.group({
       id: [null],
       percentage: [0, Validators.required],
@@ -42,15 +50,30 @@ export class CrudDiscountComponent implements OnInit {
     );
   }
 
+  showCreateForm(): void {
+    this.showForm = true;
+    this.editingDiscount = false;
+    this.discountForm.reset();
+  }
+
   createDiscount(): void {
     const discountData = this.discountForm.value;
-    const newDiscount = new Discount(discountData.id,discountData.percentage, discountData.units);
+    const missingFields = [];
+    if (!discountData.percentage) missingFields.push('Porcentaje');
+    if (!discountData.units) missingFields.push('Unidades');
+
+    if (missingFields.length > 0) {
+      this.handleError(`Faltan los siguientes campos obligatorios: ${missingFields.join(', ')}.`);
+      return;
+    }
+
+    const newDiscount = new Discount(discountData.id, discountData.percentage, discountData.units);
 
     this.discountService.createDiscount(newDiscount).subscribe(
-      (response) => {
-        alert('Descuento creado con éxito');
-        this.showForm = false; // Ocultar el formulario después de crear
-        this.loadDiscounts(); // Recargar los descuentos
+      () => {
+        this.showCreateSuccess = true; // Muestra el modal de éxito
+        this.showForm = false;
+        this.loadDiscounts();
       },
       (error) => {
         console.error('Error al crear el descuento:', error);
@@ -59,33 +82,35 @@ export class CrudDiscountComponent implements OnInit {
     );
   }
 
-  showCreateForm(): void {
-    this.showForm = true; // Muestra el formulario al hacer clic en "Crear descuento"
-    this.editingDiscount = false; // Asegúrate de que no se está editando un descuento
-    this.discountForm.reset(); // Resetea el formulario
-  }
-
-  editDiscount(discount: any): void {
+  editDiscount(discount: Discount): void {
     this.discountToEdit = discount;
-    this.editingDiscount = true; // Estamos editando
-    this.showForm = true; // Mostrar el formulario
+    this.editingDiscount = true;
+    this.showForm = true;
     this.discountForm.setValue({
       id: discount.id,
       percentage: discount.percentage,
       units: discount.units
-    }); // Rellenar el formulario con los datos del descuento
+    });
   }
 
   updateDiscount(): void {
     const discountData = this.discountForm.value;
-    const updatedDiscount = new Discount(discountData.id,discountData.percentage, discountData.units);
-    updatedDiscount.id = discountData.id;
+    const missingFields = [];
+    if (!discountData.percentage) missingFields.push('Porcentaje');
+    if (!discountData.units) missingFields.push('Unidades');
 
-    this.discountService.updateDiscount(discountData.id.toString(),updatedDiscount).subscribe(
-      (response) => {
-        alert('Descuento actualizado con éxito');
-        this.showForm = false; // Ocultar el formulario después de actualizar
-        this.loadDiscounts(); // Recargar los descuentos
+    if (missingFields.length > 0) {
+      this.handleError(`Faltan los siguientes campos obligatorios: ${missingFields.join(', ')}.`);
+      return;
+    }
+
+    const updatedDiscount = new Discount(discountData.id, discountData.percentage, discountData.units);
+
+    this.discountService.updateDiscount(discountData.id.toString(), updatedDiscount).subscribe(
+      () => {
+        this.showUpdateSuccess = true; // Muestra el modal de éxito
+        this.showForm = false;
+        this.loadDiscounts();
       },
       (error) => {
         console.error('Error al actualizar el descuento:', error);
@@ -94,18 +119,45 @@ export class CrudDiscountComponent implements OnInit {
     );
   }
 
-  deleteDiscount(id: number): void {
-    if (confirm('¿Estás seguro de que deseas eliminar este descuento?')) {
-      this.discountService.deactivateDiscount(id.toString()).subscribe(
-        (response) => {
-          alert('Descuento eliminado');
-          this.loadDiscounts(); // Recargar la lista de descuentos
-        },
-        (error) => {
-          console.error('Error al eliminar descuento:', error);
-          alert('Error al eliminar descuento');
-        }
-      );
-    }
+  confirmDelete(discount: Discount): void {
+    this.discountToDelete = discount; // Asigna el descuento a eliminar
+  }
+
+  deleteDiscountConfirmed(): void {
+    if (!this.discountToDelete) return;
+
+    this.discountService.deactivateDiscount(this.discountToDelete.id.toString()).subscribe(
+      () => {
+        this.showDeleteSuccess = true; // Muestra el modal de éxito
+        this.discountToDelete = null; // Limpia el descuento seleccionado
+        this.loadDiscounts();
+      },
+      (error) => {
+        console.error('Error al eliminar descuento:', error);
+        alert('Error al eliminar descuento');
+      }
+    );
+  }
+
+  cancelDelete(): void {
+    this.discountToDelete = null; // Cancela la acción de eliminación
+  }
+
+  handleError(errorMessage: string): void {
+    this.errorMessage = errorMessage;
+    console.error(errorMessage);
+  }
+
+  // Funciones para cerrar los modales
+  closeCreateSuccess() {
+    this.showCreateSuccess = false;
+  }
+
+  closeUpdateSuccess() {
+    this.showUpdateSuccess = false;
+  }
+
+  closeDeleteSuccess() {
+    this.showDeleteSuccess = false;
   }
 }

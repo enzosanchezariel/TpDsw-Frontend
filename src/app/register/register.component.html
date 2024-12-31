@@ -1,15 +1,12 @@
 <div class="register-container">
   <form class="register-form" (ngSubmit)="onSubmit()" #registerForm="ngForm">
-    <h2>Registro</h2>
+    <h2>Registro de Usuario</h2>
 
     <div class="form-group">
       <label for="dni">DNI</label>
       <input type="text" id="dni" class="form-control" required [(ngModel)]="registerData.dni" name="dni"
         (keypress)="validateNumber($event)"
         #dni="ngModel" />
-      <div *ngIf="dni.invalid && dni.touched" class="error-message">
-        <strong>Campo obligatorio</strong>
-      </div>
     </div>
 
     <div class="form-group">
@@ -17,9 +14,6 @@
       <input type="text" id="name" class="form-control" required [(ngModel)]="registerData.name" name="name"
         (keypress)="validateText($event)"
         #name="ngModel" />
-      <div *ngIf="name.invalid && name.touched" class="error-message">
-        <strong>Campo obligatorio</strong>
-      </div>
     </div>
 
     <div class="form-group">
@@ -27,49 +21,37 @@
       <input type="text" id="second_name" class="form-control" required [(ngModel)]="registerData.last_name"
         (keypress)="validateText($event)"
         name="second_name" #second_name="ngModel" />
-      <div *ngIf="second_name.invalid && second_name.touched" class="error-message">
-        <strong>Campo obligatorio</strong>
-      </div>
     </div>
 
     <div class="form-group">
       <label for="email">Correo electrónico</label>
       <input type="email" id="email" class="form-control" required [(ngModel)]="registerData.email" name="email"
         #email="ngModel" />
-      <div *ngIf="email.errors?.['required']" class="error-message">
-        <strong>Campo obligatorio</strong>
-      </div>
       <div *ngIf="email.errors?.['email']" class="error-message">
         <strong>Formato de correo inválido</strong>
       </div>
     </div>
 
-  <div class="form-group">
-    <label for="phone">Teléfono</label>
-    <input type="text" id="phone" class="form-control" required [(ngModel)]="registerData.phone" name="phone"
-      (keypress)="validateNumber($event)"
-      #phone="ngModel" />
-    <div *ngIf="phone.invalid && phone.touched" class="error-message">
-      <strong>Campo obligatorio</strong>
-    </div>
+<div class="form-group">
+  <label for="phone">Teléfono</label>
+  <input type="text" id="phone" class="form-control" required [(ngModel)]="registerData.phone" name="phone"
+    (keypress)="validateNumber($event)"
+    #phone="ngModel" />
+  <div *ngIf="phone.invalid && phone.touched" class="error-message">
+    <strong>Campo obligatorio</strong>
   </div>
+</div>
 
     <div class="form-group">
       <label for="address">Dirección</label>
       <input type="text" id="address" class="form-control" required [(ngModel)]="registerData.address" name="address"
         #address="ngModel" />
-      <div *ngIf="address.invalid && address.touched" class="error-message">
-        <strong>Campo obligatorio</strong>
-      </div>
     </div>
 
     <div class="form-group">
       <label for="password">Contraseña</label>
-      <input type="password" id="password" class="form-control" required [(ngModel)]="registerData.password" name="password"
-        #password="ngModel" pattern="^(?=.*[A-Z]).{8,}$" />
-      <div *ngIf="password.errors?.['required'] && password.touched" class="error-message">
-        <strong>Campo obligatorio</strong>
-      </div>
+      <input type="password" id="password" class="form-control" required [(ngModel)]="registerData.password"
+        name="password" #password="ngModel" pattern="^(?=.*[A-Z]).{8,}$" />
       <div *ngIf="password.errors?.['pattern'] && password.touched" class="error-message">
         <strong>La contraseña debe tener al menos 8 caracteres y una letra mayúscula</strong>
       </div>
@@ -77,12 +59,9 @@
 
     <div class="form-group">
       <label for="confirmPassword">Confirmar Contraseña</label>
-      <input type="password" id="confirmPassword" class="form-control" required [(ngModel)]="registerData.confirmPassword"
-        name="confirmPassword" #confirmPassword="ngModel" pattern="^(?=.*[A-Z]).{8,}$"
-        [ngClass]="{'is-invalid': confirmPassword.invalid && confirmPassword.touched}" />
-      <div *ngIf="confirmPassword.errors?.['required'] && confirmPassword.touched" class="error-message">
-        <strong>Campo obligatorio</strong>
-      </div>
+      <input type="password" id="confirmPassword" class="form-control" required
+        [(ngModel)]="registerData.confirmPassword" name="confirmPassword" #confirmPassword="ngModel"
+        pattern="^(?=.*[A-Z]).{8,}$" [ngClass]="{'is-invalid': confirmPassword.invalid && confirmPassword.touched}" />
       <div *ngIf="confirmPassword.errors?.['pattern'] && confirmPassword.touched" class="error-message">
         <strong>La contraseña debe tener al menos 8 caracteres y una letra mayúscula</strong>
       </div>
@@ -91,16 +70,18 @@
       </div>
     </div>
 
+    <!-- Mostrar mensaje de error si el nombre está vacío -->
+    <div *ngIf="errorMessage" class="error-message text-danger">
+      {{ errorMessage }}
+    </div>
 
     <button type="submit" class="btn btn-primary" [disabled]="registerForm.invalid">Registrarse</button>
 
     <div class="terms-section">
-      <p>¿Tienes una cuenta?
-        <a [routerLink]="['/login']">Iniciar sesión</a>
-      </p>
+      <p>¿Tienes una cuenta? <a [routerLink]="['/login']">Iniciar sesión</a></p>
       <p class="terms">Al pulsar este botón, usted confirma que ha leído y acepta los <a href="#">Términos y
-          Condiciones</a> y la <a href="#">Política
-          de Privacidad</a> de la compañía, y confirma que es mayor de edad.</p>
+          Condiciones</a> y la <a href="#">Política de Privacidad</a> de la compañía, y confirma que es mayor de edad.
+      </p>
     </div>
   </form>
 

@@ -16,7 +16,12 @@ export class CrudProducts implements OnInit {
   product: Product | null = null; // Producto actual para confirmación de borrado
   searchTerm: string = ''; // Término de búsqueda
   message: string | null = null; // Mensaje dinámico
-
+  increaseAmount: number = 0; // Cantidad a aumentar
+  productToIncrease: Product | null = null; // Producto seleccionado para aumentar el stock
+  showIncreaseStockModal: boolean = false; // Controla la visibilidad del modal
+  showDeleteSuccess: boolean = false; // Controla la visibilidad del mensaje de éxito
+  public productDeletedSuccess: boolean = false;
+  
   constructor(private productsService: ProductsService) {}
 
   ngOnInit(): void {
@@ -50,6 +55,41 @@ export class CrudProducts implements OnInit {
     );
   }
 
+  // Aumentar stock
+  openIncreaseStockModal(product: Product): void {
+    this.productToIncrease = product;
+    this.showIncreaseStockModal = true;
+  }
+
+  closeIncreaseStockModal(): void {
+    this.showIncreaseStockModal = false;
+  }
+
+  increaseStock(): void {
+  console.log("Valor de increaseAmount antes de validarlo:", this.increaseAmount);
+
+  if (isNaN(this.increaseAmount) || this.increaseAmount <= 0 || !this.productToIncrease) {
+    this.message = 'Por favor ingrese una cantidad válida para aumentar el stock.';
+    return;
+  }
+
+  this.productsService.increaseStock(this.productToIncrease.id.toString(), this.increaseAmount).subscribe(
+    (response) => {
+      this.message = `Stock aumentado exitosamente para el producto "${this.productToIncrease?.name}".`;
+      this.loadProducts(); 
+      this.closeIncreaseStockModal(); 
+      this.increaseAmount = 0;
+    },
+    (error) => {
+      console.error('Error al aumentar el stock:', error);
+      this.message = `Hubo un error al aumentar el stock: ${error.message}`;
+    }
+  );
+}
+
+
+
+  // Confirmación de eliminación
   confirmDelete(product: Product): void {
     this.product = product; // Asigna el producto seleccionado para la confirmación
   }
@@ -58,7 +98,7 @@ export class CrudProducts implements OnInit {
     if (!this.product) return; // Asegura que hay un producto seleccionado
     this.productsService.deactivateProduct(this.product.id.toString(), this.product).subscribe(
       () => {
-        this.showMessage(`El producto "${this.product?.name}" fue eliminado con éxito.`);
+        this.productDeletedSuccess = true; // Muestra el mensaje de éxito
         this.loadProducts();
       },
       (error) => console.error('Error al eliminar el producto:', error)
@@ -66,10 +106,15 @@ export class CrudProducts implements OnInit {
     this.product = null; // Limpia el producto seleccionado después de eliminarlo
   }
 
+  closeDeleteSuccess() {
+    this.productDeletedSuccess = false;
+  }
+
   cancel(): void {
     this.product = null; // Cancela la acción de eliminación
   }
 
+  // Mostrar mensaje dinámico
   showMessage(message: string): void {
     this.message = message;
     setTimeout(() => {

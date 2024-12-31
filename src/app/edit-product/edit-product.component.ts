@@ -16,6 +16,8 @@ export class EditProductComponent implements OnInit {
   discounts: any[] = [];
   isLoading: boolean = true; // Control de carga
   errorMessage: string | null = null; // Mensaje de error
+  public successModalVisible: boolean = false; // Control del modal de éxito
+
 
   constructor(
     private fb: FormBuilder,
@@ -96,6 +98,19 @@ export class EditProductComponent implements OnInit {
       return;
     }
 
+    const productData = this.productForm.value;
+
+    const missingFields = [];
+    if (!productData.desc) missingFields.push('Descripción');
+    if (!productData.img || productData.price <= 0) missingFields.push('Imagen');
+    if (!productData.prices || productData.prices <= 0) missingFields.push('Precio');
+    if (!productData.category) missingFields.push('Categoría');
+
+    if (missingFields.length > 0) {
+      this.handleError(`Faltan los siguientes campos obligatorios: ${missingFields.join(', ')}.`);
+      return;
+    }
+
     // Verificar si ya existe un producto con el mismo nombre (exceptuando el producto actual)
     this.productsService.getAllProducts().subscribe(
       (response) => {
@@ -109,6 +124,10 @@ export class EditProductComponent implements OnInit {
         if (existingProduct) {
           this.handleError(`Ya existe un producto activo con el nombre "${this.productForm.value.name}".`);
           return;
+        }
+
+        if(this.productForm.get('discount_id')?.value === "null"){
+          this.productForm.patchValue({ discount_id: null });
         }
 
         // Si no existe un producto con el mismo nombre, proceder con la actualización
@@ -128,25 +147,30 @@ export class EditProductComponent implements OnInit {
           this.productsService.updateProduct(this.originalProduct.id.toString(), updatedProduct).subscribe(
             (response) => {
               console.log('Producto actualizado:', response);
-              alert('Producto modificado con éxito');
-              this.router.navigate(['/product-details', this.originalProduct?.id]);
+              this.successModalVisible = true; // Mostrar el modal de éxito
+
             },
             (error) => {
               console.error('Error al modificar el producto:', error);
-              alert('Error al modificar el producto');
+              this.handleError('Error al modificar el producto.');
             }
           );
         }
       },
       (error) => {
         console.error('Error al cargar los productos:', error);
-        alert('Error al cargar los productos.');
+        this.handleError('Error al cargar los productos.');
       }
     );
   }
 
   cancel(): void {
     this.router.navigate(['/product-details', this.originalProduct?.id]);
+  }
+
+  closeSuccessModal(): void {
+    this.successModalVisible = false;
+    this.router.navigate(['/']); // Redirigir después de cerrar el modal
   }
 
   // Manejo centralizado de errores

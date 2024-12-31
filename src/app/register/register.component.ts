@@ -19,6 +19,9 @@ export class RegisterComponent {
     password: '',
     confirmPassword: ''
   };
+  public showCreateSuccess: boolean = false;
+  public errorMessage: string | null = null; // Para los mensajes de error
+
 
   constructor(private http: HttpClient, private router: Router) {}
   

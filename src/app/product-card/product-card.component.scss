@@ -6,7 +6,8 @@
     padding: 0;
     border-radius: 0.4rem;
     overflow: hidden;
-    transition: all 0.3s ease;
+    transition: all 0.5s ease-in-out;
+    /* Transición más lenta y suave */
 }
 
 a {
@@ -43,7 +44,8 @@ article footer {
     -webkit-box-orient: vertical;
     margin-bottom: 0.7rem;
     text-align: left;
-    transition: text-align 0.3s ease;
+    transition: text-align 0.5s ease-in-out;
+    /* Transición más lenta y suave */
 }
 
 .card:hover .details .name {

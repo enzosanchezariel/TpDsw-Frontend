@@ -29,22 +29,38 @@
         <td>${{ product.prices.at(-1)?.price }}</td>
         <td>
           <button class="btn btn-warning" [routerLink]="['/edit-product', product.id]">Modificar</button>
+          <button class="btn btn-info" (click)="openIncreaseStockModal(product)">Incrementar Stock</button>
           <button class="btn btn-danger" (click)="confirmDelete(product)">Eliminar</button>
         </td>
       </tr>
     </tbody>
   </table>
 
+  <!-- Modal para aumentar stock -->
+  <div *ngIf="showIncreaseStockModal" class="modal show" tabindex="-1" role="dialog" style="display: block;"
+    aria-labelledby="modal-title">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-title" class="modal-title">Aumentar Stock</h5>
+        </div>
+        <div class="modal-body">
+          <label for="increaseAmount">Cantidad a aumentar:</label>
+          <input type="number" id="increaseAmount" [(ngModel)]="increaseAmount" class="form-control" placeholder="Cantidad" min="0"/></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeIncreaseStockModal()">Cancelar</button>
+          <button type="button" class="btn btn-success" (click)="increaseStock()">Aumentar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Botón para agregar un producto -->
   <button class="btn btn-primary mt-3" [routerLink]="['/create-product']">Agregar Producto</button>
 
-  <!-- Mensaje dinámico -->
-  <div *ngIf="message" class="alert alert-info" role="alert">
-    {{ message }}
-  </div>
-
   <!-- Confirmación de eliminación -->
-  <div *ngIf="product" class="modal show" tabindex="-1" role="dialog" style="display: block;" aria-labelledby="modal-title">
+  <div *ngIf="product" class="modal show" tabindex="-1" role="dialog" style="display: block;"
+    aria-labelledby="modal-title">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -60,6 +76,18 @@
       </div>
     </div>
   </div>
+
+  <div *ngIf="productDeletedSuccess" class="modal success-message">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h5 class="modal-title">Eliminación exitosa</h5>
+      </div>
+      <div class="modal-body">
+        <p>La categoría se ha eliminado con éxito.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" (click)="closeDeleteSuccess()">Cerrar</button>
+      </div>
+    </div>
+  </div>
 </div>
-
-

@@ -1,5 +1,5 @@
 <div class="container">
-  <h2>Lista de Descuentos</h2>
+  <h2>Gestión de Descuentos</h2>
 
   <!-- Tabla de descuentos -->
   <table class="table mt-3">
@@ -18,15 +18,15 @@
         <td>{{ discount.units }}</td>
         <td>
           <!-- Botón para editar descuento -->
-          <button class="btn btn-warning" (click)="editDiscount(discount)">Modificar</button>
-          <button class="btn btn-danger" (click)="deleteDiscount(discount.id)">Eliminar</button>
+          <button class="btn btn-warning" (click)="editDiscount(discount)">Editar</button>
+          <button class="btn btn-danger" (click)="confirmDelete(discount)">Eliminar</button>
         </td>
       </tr>
     </tbody>
   </table>
 
   <!-- Botón para mostrar el formulario de creación -->
-  <button class="btn btn-primary" (click)="showCreateForm()">Crear Descuento</button>
+  <button class="btn btn-primary" (click)="showCreateForm()">Nuevo Descuento</button>
 
   <!-- Mostrar formulario cuando showForm es true -->
   <div *ngIf="showForm">
@@ -38,10 +38,89 @@
         <label for="units">Unidades:</label>
         <input type="number" id="units" formControlName="units" class="form-control" required>
 
-        <button type="submit" class="btn btn-success">{{ editingDiscount ? 'Actualizar descuento' : 'Crear descuento'
-          }}</button>
+        <!-- Cartel de error -->
+        <div class="alert" *ngIf="errorMessage">
+          {{ errorMessage }}
+        </div>
+
+        <button type="submit" class="btn btn-success">
+          {{ editingDiscount ? 'Actualizar descuento' : 'Crear descuento' }}
+        </button>
         <button type="button" class="btn btn-secondary" (click)="showForm = false">Cancelar</button>
       </div>
     </form>
+  </div>
+
+  <!-- Confirmación de eliminación -->
+  <div *ngIf="discountToDelete" class="modal show" tabindex="-1" role="dialog" style="display: block;"
+    aria-labelledby="modal-title">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-title" class="modal-title">Confirmar eliminación</h5>
+        </div>
+        <div class="modal-body">
+          <p>¿Está seguro de que desea eliminar el descuento con ID "{{ discountToDelete.id }}"?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="deleteDiscountConfirmed()">Eliminar</button>
+          <button type="button" class="btn btn-secondary" (click)="cancelDelete()">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de creación exitosa -->
+  <div *ngIf="showCreateSuccess" class="modal show" tabindex="-1" role="dialog" style="display: block;"
+    aria-labelledby="modal-title">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-title" class="modal-title">Creación exitosa</h5>
+        </div>
+        <div class="modal-body">
+          <p>El descuento ha sido creado con éxito.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" (click)="closeCreateSuccess()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de modificación exitosa -->
+  <div *ngIf="showUpdateSuccess" class="modal show" tabindex="-1" role="dialog" style="display: block;"
+    aria-labelledby="modal-title">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-title" class="modal-title">Modificación exitosa</h5>
+        </div>
+        <div class="modal-body">
+          <p>El descuento ha sido modificado con éxito.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" (click)="closeUpdateSuccess()">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de eliminación exitosa -->
+  <div *ngIf="showDeleteSuccess" class="modal show" tabindex="-1" role="dialog" style="display: block;"
+    aria-labelledby="modal-title">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="modal-title" class="modal-title">Eliminación exitosa</h5>
+        </div>
+        <div class="modal-body">
+          <p>El descuento ha sido eliminado con éxito.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" (click)="closeDeleteSuccess()">Cerrar</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

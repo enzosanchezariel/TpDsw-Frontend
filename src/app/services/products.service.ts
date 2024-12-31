@@ -54,9 +54,14 @@ export class ProductsService {
     return this.http.patch<any>(url, product);
   }
 
-  // Nuevo método: obtener todos los productos por nombre
+  // Revisar si se usa
   getAllProductsByName(name: string): Observable<Product[]> {
     const url = `${this.baseUrl}products?name=${encodeURIComponent(name)}`;
     return this.http.get<Product[]>(url);
+  }
+
+  increaseStock(id: string, increaseAmount: number): Observable<any> {
+    const url = this.baseUrl + `products/${id}/increase-stock`;
+    return this.http.post<any>(url, { increaseAmount });
   }
 }

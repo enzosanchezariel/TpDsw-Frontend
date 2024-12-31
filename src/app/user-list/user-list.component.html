@@ -1,5 +1,5 @@
 <div class="container">
-  <h2>Lista de Usuarios</h2>
+  <h2>Gestión de Usuarios</h2>
 
   <!-- Campo de búsqueda -->
   <div class="search-container mb-3">
@@ -31,12 +31,12 @@
         <td>{{ user.last_name }}</td>
         <td>{{ user.email }}</td>
         <td>
-          <select [(ngModel)]="user.role">
+          <select [(ngModel)]="user.role" class="form-control" style="width: 200px;">
             <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
           </select>
         </td>
         <td>
-          <button class="btn btn-warning" (click)="changeRole(user)">Actualizar rol</button>
+          <button class="btn btn-warning" (click)="openConfirmationModal(user)">Actualizar rol</button>
         </td>
       </tr>
     </tbody>
@@ -46,4 +46,37 @@
   <div *ngIf="!isLoading && filteredUsers.length === 0" class="no-users">
     No se encontraron usuarios.
   </div>
+
+<!-- Modal de éxito -->
+<div *ngIf="showSuccessModal" class="modal">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h5 class="modal-title">Éxito</h5>
+      <button class="close" (click)="closeSuccessModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      El rol del usuario ha sido actualizado con éxito.
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-success" (click)="closeSuccessModal()">Cerrar</button>
+    </div>
+  </div>
 </div>
+
+  <!-- Modal de confirmación -->
+  <div *ngIf="showModal" class="modal">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h5 class="modal-title">Confirmar Cambio de Rol</h5>
+        <button class="close" (click)="closeModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        ¿Estás seguro de que deseas cambiar el rol del usuario <strong>{{ selectedUser?.name }}</strong> a
+        <strong>{{ selectedUser?.role }}</strong>?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" (click)="closeModal()">Cancelar</button>
+        <button class="btn btn-primary" (click)="confirmRoleChange()">Confirmar</button>
+      </div>
+    </div>
+  </div>

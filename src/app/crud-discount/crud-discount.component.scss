@@ -1,34 +1,63 @@
+/* Estilo de alerta */
+.alert {
+  color: #fff;
+  background-color: #ff4d4d;
+  border-radius: 4px;
+  padding: 15px 20px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.5s ease-out;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: #e74c3c;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
 .container {
-  padding: 20px;
+  padding: 25px;
   background-color: #f8f8f8;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 1200px;
 
   h2 {
     color: #4a0e4e;
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
   }
 
   .table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
+    margin-top: 25px;
 
     thead {
-      background-color: #8e44ad;
-      /* Color de fondo de los títulos */
-      color: black;
-      /* Color del texto de los títulos */
+      background-color: #4a0e4e;
+      color: white;
 
       th {
-        padding: 12px;
-        font-size: 14px;
+        padding: 14px;
+        font-size: 15px;
         text-align: center;
         vertical-align: middle;
-        /* Alineación vertical */
-        color: black;
-        /* Asegurando que el texto de los títulos sea blanco */
       }
     }
 
@@ -38,26 +67,19 @@
 
         &:hover {
           background-color: #f1f1f1;
-          /* Efecto hover */
         }
 
         td {
-          padding: 12px;
-          font-size: 14px;
+          padding: 14px;
+          font-size: 15px;
           color: #333;
           vertical-align: middle;
-          /* Alineación vertical */
         }
 
         td:nth-child(4),
-        td:nth-child(5) {
-          text-align: center;
-          /* Alineación centro para precio y stock */
-        }
-
+        td:nth-child(5),
         td:nth-child(6) {
           text-align: center;
-          /* Alineación centro para botones */
         }
       }
     }
@@ -67,150 +89,134 @@
   .table th:nth-child(1) {
     width: 10%;
     text-align: center;
-    /* Alineación al centro para ID */
   }
 
   .table td:nth-child(2),
   .table th:nth-child(2) {
-    width: 25%;
-    text-align: left;
-    /* Alineación a la izquierda para el nombre */
+    width: 20%;
+    text-align: center;
   }
 
   .table td:nth-child(3),
   .table th:nth-child(3) {
     width: 25%;
-    text-align: left;
-    /* Alineación a la izquierda para la descripción */
-  }
-
-  .table td:nth-child(4),
-  .table th:nth-child(4) {
-    width: 15%;
     text-align: center;
-    /* Precio alineado al centro */
-  }
-
-  .table td:nth-child(5),
-  .table th:nth-child(5) {
-    width: 15%;
-    text-align: center;
-    /* Stock alineado al centro */
-  }
-
-  .table td:nth-child(6),
-  .table th:nth-child(6) {
-    width: 10%;
-    text-align: center;
-    /* Botones centrados */
   }
 
   .btn {
-    margin: 0 8px;
-    padding: 8px 12px;
-    font-size: 13px;
-    border-radius: 4px;
+    margin: 5px 8px;
+    padding: 10px 15px;
+    font-size: 14px;
+    border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.2s ease;
 
     &:hover {
       transform: translateY(-2px);
-      /* Efecto de elevación */
-    }
-
-    &.btn-warning {
-      background-color: #8e44ad;
-      color: white;
-
-      &:hover {
-        background-color: #6c3483;
-      }
     }
 
     &.btn-danger {
-      background-color: #dc3545;
+      background-color: #e74c3c;
       color: white;
 
       &:hover {
-        background-color: #c82333;
+        background-color: #c0392b;
       }
     }
 
-    &.btn-primary {
-      background-color: #8e44ad;
-      color: white;
-
-      &:hover {
-        background-color: #6c3483;
-      }
-    }
-
-    &.btn-success {
-      background-color: #28a745;
-      color: white;
-
-      &:hover {
-        background-color: #218838;
-      }
-    }
-
-    &.btn-secondary {
-      background-color: #6c757d;
-      color: white;
-
-      &:hover {
-        background-color: #5a6268;
-      }
+    .btn-primary {
+      margin-bottom: 10px
     }
   }
 
-  .form-group {
-    margin-bottom: 20px;
+  button {
+    width: auto;
+    margin-top: 15px;
+    margin-bottom: 15px
+  }
+}
 
-    input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      font-size: 16px;
+/* Estilos para el modal de confirmación */
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1050;
 
-      &:focus {
-        outline: none;
-        border-color: #8e44ad;
-        box-shadow: 0 0 0 2px rgba(142, 68, 173, 0.2);
+  .modal-dialog {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    max-width: 600px;
+    width: 90%;
+    padding: 25px;
+    position: absolute;
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+
+      .modal-title {
+        font-size: 20px;
+        color: #4a0e4e;
+        font-weight: bold;
+      }
+
+      .close {
+        background: none;
+        border: none;
+        font-size: 20px;
+        font-weight: bold;
+        color: #999;
+        cursor: pointer;
+
+        &:hover {
+          color: #333;
+        }
       }
     }
 
-    button {
-      background-color: #8e44ad;
-      color: white;
-      padding: 12px 20px;
-      border: none;
-      border-radius: 4px;
+    .modal-body {
+      margin-top: 15px;
       font-size: 16px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      margin-top: 10px;
+      color: #555;
+    }
 
-      &:hover {
-        background-color: #6c3483;
-      }
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      margin-top: 20px;
 
-      &.btn-success {
-        background-color: #28a745;
-
-        &:hover {
-          background-color: #218838;
-        }
-      }
-
-      &.btn-secondary {
-        background-color: #6c757d;
-
-        &:hover {
-          background-color: #5a6268;
-        }
+      .btn {
+        padding: 12px 20px;
+        font-size: 14px;
       }
     }
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+    margin: 10px auto;
+  }
+
+  .modal-dialog {
+    padding: 20px;
+  }
+
+  .table th,
+  .table td {
+    font-size: 13px;
+    padding: 10px;
   }
 }

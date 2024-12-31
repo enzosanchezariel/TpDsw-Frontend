@@ -1,9 +1,7 @@
-// src/app/components/remove-user/remove-user.component.ts
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../services/auth.service.js';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-remove-user',
@@ -15,50 +13,42 @@ export class RemoveUserComponent {
   password: string = '';
   confirmPassword: string = '';
   errorMessage: string = '';
-  successMessage: string = '';
   confirmMessage: string = '';
   isConfirmed: boolean = false;
+  showDeleteConfirmation: boolean = false;
+  confirmationMessage: boolean = false;
 
   constructor(private userService: UserService, private router: Router, private authService: AuthService) {}
 
-  // Método para mostrar mensaje de confirmación
+  // Mostrar mensaje de confirmación de eliminación
   showConfirmation(): void {
     if (this.password === this.confirmPassword) {
       this.isConfirmed = true;
       this.confirmMessage = '¿Está seguro de que desea eliminar su cuenta? Esta acción no se puede deshacer.';
+      this.showDeleteConfirmation = true; // Mostrar la pregunta de confirmación
     } else {
       this.errorMessage = 'Las contraseñas no coinciden.';
-      this.successMessage = '';
     }
   }
 
-removeUser(): void {
-  // Limpiar mensajes previos al iniciar la eliminación
-  this.errorMessage = '';
-  this.successMessage = '';
-
-  if (!this.password || !this.confirmPassword) {
-    this.errorMessage = 'Por favor, ingrese la contraseña dos veces para confirmar.';
-    return;
-  }
-
-  if (this.isConfirmed) {
+  // Confirmar eliminación de cuenta
+  confirmDelete(): void {
     // Llamada al servicio para eliminar el usuario
     this.userService.removeUser(this.email).subscribe(
       () => {
-        alert('Usuario eliminado exitosamente.');
-        this.router.navigate(['/home']);
-        localStorage.clear();
+        this.confirmationMessage = true; // Muestra el modal de confirmación de eliminación
         this.authService.logout();
+        localStorage.clear();
       },
       (error) => {
-        // Si ocurre un error, muestra el mensaje de error
         this.errorMessage = 'Ocurrió un error al eliminar el usuario: ' + error.message;
-        this.successMessage = '';
       }
     );
-  } else {
-    this.errorMessage = 'Por favor, confirme la eliminación ingresando la contraseña correctamente.';
   }
-}
+
+  // Redirigir al inicio después de la eliminación
+  redirectToHome(): void {
+    this.confirmationMessage = false; // Ocultar el modal de confirmación
+    this.router.navigate(['/home']); // Redirige al inicio
+  }
 }
