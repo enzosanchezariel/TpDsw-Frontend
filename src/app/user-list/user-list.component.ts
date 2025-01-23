@@ -65,7 +65,7 @@ export class UserListComponent implements OnInit {
 
   confirmRoleChange(): void {
     if (this.selectedUser) {
-      this.userService.updateUserData(this.selectedUser.email, this.selectedUser).subscribe(
+      this.userService.changeUserRole(this.selectedUser.email, this.selectedUser.role).subscribe(
         (response) => {
           // Mostrar el modal de éxito
           this.showModal = false; // Cerrar el modal de confirmación

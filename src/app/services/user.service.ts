@@ -32,5 +32,10 @@ export class UserService {
     const url = this.apiUrl + 'users';
     return this.http.get<any>(url);
   }
+
+  changeUserRole(email: string, role: string): Observable<any> {
+    const url = this.apiUrl + `users/${email}/role`;
+    return this.http.put<any>(url, { role });
+  }
   
 }

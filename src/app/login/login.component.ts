@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';  // Servicio de autenticación que crearás
+import { AuthService } from '../services/auth.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
@@ -9,21 +9,34 @@ import { FormBuilder, FormGroup } from '@angular/forms';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
-
   loginForm: FormGroup;
+  showPassword = false;
+  errorMessage: string | null = null;
+  showErrorModal = false; // Propiedad para manejar el modal de error
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       email: [''],
       password: ['']
     });
   }
 
+  togglePasswordVisibility(): void {
+    this.showPassword = !this.showPassword;
+    const passwordField = document.getElementById('password') as HTMLInputElement;
+    passwordField.type = this.showPassword ? 'text' : 'password';
+  }
+
   onSubmit() {
     const loginData = this.loginForm.value;
 
     if (!loginData.email || !loginData.password) {
-      alert('Por favor, ingrese su correo electrónico y contraseña.');
+      this.errorMessage = 'Por favor, ingrese su correo electrónico y contraseña.';
+      this.showErrorModal = true;
       return;
     }
 
@@ -33,12 +46,14 @@ export class LoginComponent {
       },
       error => {
         console.error('Error al iniciar sesión:', error);
-            if (error.error && error.error.message) {
-              alert('Error al iniciar sesión: ' + error.error.message);
-            } else {
-              alert('Error al iniciar sesión. Por favor, inténtelo nuevamente.');
-            }
+        this.errorMessage = error.error?.message || 'Error al iniciar sesión. Por favor, inténtelo nuevamente.';
+        this.showErrorModal = true;
       }
     );
+  }
+
+  closeErrorModal() {
+    this.showErrorModal = false;
+    this.errorMessage = null;
   }
 }

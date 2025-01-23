@@ -28,6 +28,7 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
   canViewAdmin: boolean = false;
   canViewEmployee: boolean = false;
+  canViewCustomer: boolean = false;
   logoutMessage: boolean = false; // Nueva propiedad para el mensaje
   user: User = new User(0, '', '', '', '', '', '', '', ''); 
 
@@ -52,7 +53,8 @@ export class AppHeaderComponent implements OnInit, OnDestroy {
 
     this.roleSub = this.authService.userRole$.subscribe(role => {
       this.canViewAdmin = role === 'admin';
-      this.canViewEmployee = role === 'employee';
+      this.canViewEmployee = role === 'empleado';
+      this.canViewCustomer = role === 'cliente';
       this.userEmail = this.authService.getUserEmail();
     });
 

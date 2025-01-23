@@ -11,6 +11,7 @@ import { AuthService } from '../services/auth.service';
 import { CommonModule } from '@angular/common';
 import { OrdersService } from '../services/orders.service';
 import { ProductAmount } from '../../entities/productamount.entity';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-product-details',
@@ -30,6 +31,9 @@ export class ProductDetailsComponent {
   cart: ProductAmount[] = [];
   showConfirmation: boolean = false;
   showSuccess: boolean = false;
+  canViewCustomer: boolean = false;  
+  private authStatusSub: Subscription | undefined;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -46,6 +50,12 @@ export class ProductDetailsComponent {
       this.service.getOneProduct(this.id).subscribe((response) => this.product = response.data);
     }
     this.cart = this.ordersService.getCart();
+    const role = this.authService.getRole();
+    
+    this.authStatusSub = this.authService.isAuthenticated$.subscribe(isAuthenticated => {
+      this.canViewCustomer = isAuthenticated && (this.authService.getRole() === 'cliente');
+    });
+
   }
 
   checkViews(): void {

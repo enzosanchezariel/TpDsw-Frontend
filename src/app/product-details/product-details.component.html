@@ -74,9 +74,9 @@
                     </p>
                     <p>{{ product.desc }}</p>
                 </div>
-                <strong *ngIf="loggedIn && product.status === 'active'">Cantidad de unidades:</strong>
-                <input *ngIf="loggedIn && product.status === 'active'" [disabled]="checkIfAdded()" [(ngModel)]="amount" name="amount" type="number" placeholder="1" min="0" [max]="product.stock"/>
-                <div *ngIf="loggedIn && product.status === 'active'" class="side-to-side">
+                <strong *ngIf="loggedIn && product.status === 'active' && !canViewAdmin">Cantidad de unidades:</strong>
+                <input *ngIf="loggedIn && product.status === 'active' && !canViewAdmin" [disabled]="checkIfAdded()" [(ngModel)]="amount" name="amount" type="number" placeholder="1" min="0" [max]="product.stock"/>
+                <div *ngIf="loggedIn && product.status === 'active' && !canViewAdmin" class="side-to-side">
                     <div>
                         <strong>Total:</strong>
                         <span *ngIf="product.discount">
@@ -96,12 +96,13 @@
                         </span>
                     </div>
                     <div class="button-group" *ngIf="loggedIn">
-                        <button class="add-to-cart" (click)="addToCart()"
+                        <button *ngIf="!canViewAdmin" class="add-to-cart" (click)="addToCart()"
                             [disabled]="amount <= 0 || checkIfAdded()">Añadir al carrito</button>
-                        <button *ngIf="canViewEmployee" [routerLink]="['/edit-product', product.id]"
-                            class="edit-product">Modificar Producto</button>
+                        
                     </div>
                 </div>
+                <button class="button-group" *ngIf="canViewEmployee" [routerLink]="['/edit-product', product.id]" class="edit-product">Modificar
+                    Producto</button>
                 <strong *ngIf="checkIfAdded()">Producto añadido al carrito</strong>
                 <strong *ngIf="!loggedIn">inicia sesión para realizar pedidos</strong>
             </div>

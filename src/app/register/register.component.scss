@@ -1,5 +1,6 @@
 /* Estilos para el contenedor de registro */
 .register-container {
+  background-color: #ecf0f1;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -56,14 +57,13 @@ h2 {
 
 button {
   width: 100%;
-  padding: 12px;
-  background-color: #8e44ad;
-  color: white;
+  padding: 0.75rem;
+  color: #fff;
   border: none;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s ease;
 
   &:hover {
     background-color: #6c3483;
@@ -76,25 +76,42 @@ button {
 }
 
 .terms-section {
-  margin-top: 15px;
   text-align: center;
-  font-size: 14px;
-
-  a {
-    color: #8e44ad;
-    text-decoration: none;
-
-    &:hover {
+  
+    p {
+      margin: 0.5rem 0;
+      font-size: 0.85rem;
+  
+      .remember-me {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 1rem;
+  
+        input[type="checkbox"] {
+          margin-right: 0.5rem;
+          transform: scale(0.8);
+        }
+  
+        label {
+          font-size: 0.9rem;
+          color: #333;
+        }
+      }
+    }
+  
+    a {
+      color: #6c3483;
+      text-decoration: none;
+      font-weight: bold;
+    }
+  
+    a:hover {
       text-decoration: underline;
     }
+
   }
 
-  .terms {
-    margin-top: 10px;
-    font-size: 12px;
-    color: #777;
-  }
-}
 
 /* Estilos responsivos */
 @media (max-width: 768px) {
