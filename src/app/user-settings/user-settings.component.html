@@ -45,3 +45,17 @@
     <button type="button" (click)="cancel()">Cancelar</button>
   </form>
 </div>
+
+<div *ngIf="successModalVisible" class="modal success-message">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h5 class="modal-title">Modificación exitosa</h5>
+    </div>
+    <div class="modal-body">
+      <p>El usuario ha sido modificado con éxito.</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-success" (click)="closeSuccessModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
