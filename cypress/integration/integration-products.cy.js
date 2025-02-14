@@ -1,4 +1,4 @@
-describe('Mostrar productos desde el backend', () => {
+describe('Integration Test - Mostrar productos desde el backend', () => {
     it('debería mostrar la lista de productos en la página de inicio', () => {
       cy.intercept('GET', 'http://localhost:3000/api/products', {
         statusCode: 200,

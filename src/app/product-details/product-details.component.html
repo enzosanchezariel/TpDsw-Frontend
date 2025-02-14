@@ -75,7 +75,7 @@
                     <p>{{ product.desc }}</p>
                 </div>
                 <strong *ngIf="loggedIn && product.status === 'active' && !canViewAdmin">Cantidad de unidades:</strong>
-                <input *ngIf="loggedIn && product.status === 'active' && !canViewAdmin" [disabled]="checkIfAdded()" [(ngModel)]="amount" name="amount" type="number" placeholder="1" min="0" [max]="product.stock"/>
+                <input *ngIf="loggedIn && product.status === 'active' && !canViewAdmin" [disabled]="checkIfAdded() || product.stock === 0" [(ngModel)]="amount" name="amount" type="number" placeholder="1" min="0" [max]="product.stock"/>
                 <div *ngIf="loggedIn && product.status === 'active' && !canViewAdmin" class="side-to-side">
                     <div>
                         <strong>Total:</strong>
@@ -97,7 +97,7 @@
                     </div>
                     <div class="button-group" *ngIf="loggedIn">
                         <button *ngIf="!canViewAdmin" class="add-to-cart" (click)="addToCart()"
-                            [disabled]="amount <= 0 || checkIfAdded()">Añadir al carrito</button>
+                            [disabled]="amount <= 0 || checkIfAdded() || product.stock === 0">Añadir al carrito</button>
                         
                     </div>
                 </div>
