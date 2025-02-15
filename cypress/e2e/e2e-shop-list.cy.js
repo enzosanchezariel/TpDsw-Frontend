@@ -3,16 +3,16 @@ describe('E2E Test - Compra de Producto', () => {
 
         let access_token, role, token_id;
 
-        cy.visit('http://localhost:4200/login');
+        cy.visit('/login');
 
-        let email = 'usuario@example.com';
-        let password = 'Contraseña123'
+        let email = 'user@example.com';
+        let password = 'Password123'
 
         cy.get('input[name="email"]').type(email);
         cy.get('input[name="password"]').type(password);
         cy.get('button[type="submit"]').click();
 
-        cy.request('POST', 'http://localhost:3000/api/auth/login', {
+        cy.request('POST', Cypress.env('API_URL') + '/api/auth/login', {
             email,
             password
         }).then((response) => {
@@ -29,7 +29,7 @@ describe('E2E Test - Compra de Producto', () => {
             }
         });
 
-        cy.request('GET', 'http://localhost:3000/api/products')
+        cy.request('GET', Cypress.env('API_URL') + '/api/products')
             .then((response) => {
                 expect(response.status).to.eq(200);
                 expect(response.body.data).to.be.an('array');
@@ -49,9 +49,9 @@ describe('E2E Test - Compra de Producto', () => {
 
                 const product = productWithStock;
 
-                cy.visit(`http://localhost:4200/productdetails/${product.id}`);
+                cy.visit(`/productdetails/${product.id}`);
 
-                cy.request(`http://localhost:3000/api/products/${product.id}`).then((prodRes) => {
+                cy.request(Cypress.env('API_URL') + `/api/products/${product.id}`).then((prodRes) => {
 
                     expect(prodRes.status).to.eq(200);
 
@@ -75,7 +75,7 @@ describe('E2E Test - Compra de Producto', () => {
                         win.localStorage.setItem('cart', JSON.stringify(cart));
                     });
 
-                    cy.visit('http://localhost:4200/shop-list');
+                    cy.visit('/shop-list');
 
                     // Verifica que el carrito coincida con lo guardado en localStorage
 
@@ -84,7 +84,7 @@ describe('E2E Test - Compra de Producto', () => {
                     cy.get(':nth-child(2) > article > table > tbody > tr > :nth-child(4)').should('contain', prodRes.body.data.stock);
 
                     cy.window().then((win) => {
-                        cy.request('POST', `http://localhost:3000/api/tickets`, {
+                        cy.request('POST', Cypress.env('API_URL') + `/api/tickets`, {
                             access_token: access_token,
                             product_amounts: [{
                                 product: prodRes.body.data.id,
@@ -92,6 +92,8 @@ describe('E2E Test - Compra de Producto', () => {
                             }]
                         }).then((ticketRes) => {
                             expect(ticketRes.status).to.eq(201);
+                            win.localStorage.setItem('cart', JSON.stringify([]));
+                            cy.visit('/shop-list');
                         });
                     });
                 });

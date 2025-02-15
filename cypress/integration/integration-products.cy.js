@@ -1,6 +1,6 @@
 describe('Integration Test - Mostrar productos desde el backend', () => {
     it('debería mostrar la lista de productos en la página de inicio', () => {
-      cy.intercept('GET', 'http://localhost:3000/api/products', {
+      cy.intercept('GET', Cypress.env('API_URL') + '/api/products', {
         statusCode: 200,
         body: {
           data: [
@@ -50,7 +50,7 @@ describe('Integration Test - Mostrar productos desde el backend', () => {
         }
       }).as('getProducts');
       
-      cy.visit('http://localhost:4200/home');
+      cy.visit('/home');
       
       cy.wait('@getProducts');
       

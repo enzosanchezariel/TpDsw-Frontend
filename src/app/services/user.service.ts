@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../../entities/user.entity'; // Define la entidad User según tu estructura
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3000/api/'; // URL base de la API para usuarios
+  private apiUrl = environment.PUBLIC_BACKEND_URL + '/api/'; // URL base de la API para usuarios
 
   constructor(private http: HttpClient) {}
 

@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from '../../entities/user.entity';
 import { Observable, BehaviorSubject, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api/auth'; // Cambia esto a tu URL de backend
+  private apiUrl = environment.PUBLIC_BACKEND_URL + '/api/auth'; // Cambia esto a tu URL de backend
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkAuthentication());
   private userRoleSubject = new BehaviorSubject<string | null>(this.getRole());
 

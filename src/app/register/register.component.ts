@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-register',
@@ -50,7 +51,7 @@ export class RegisterComponent {
     }
 
     if (this.registerData.dni && this.registerData.name && this.registerData.last_name && this.registerData.email && this.registerData.password && this.registerData.confirmPassword) {
-      this.http.post('http://localhost:3000/api/users', this.registerData).subscribe(
+      this.http.post(environment.PUBLIC_BACKEND_URL + '/api/users', this.registerData).subscribe(
         response => {
           console.log('Registro exitoso', response);
           this.router.navigate(['/login']);

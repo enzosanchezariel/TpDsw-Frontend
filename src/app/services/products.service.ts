@@ -4,12 +4,13 @@ import { Observable } from 'rxjs';
 import { Product } from '../../entities/product.entity';
 import { Category } from '../../entities/category.entity'; // Ajusta la importación según la ubicación real
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductsService {
-  private baseUrl = 'http://localhost:3000/api/';
+  private baseUrl = environment.PUBLIC_BACKEND_URL + '/api/';
 
   constructor(private http: HttpClient, private authService: AuthService) {}
 

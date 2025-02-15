@@ -3,13 +3,14 @@ import { ProductAmount } from '../../entities/productamount.entity';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './auth.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrdersService {
 
-  private apiUrl = 'http://localhost:3000/api/tickets';
+  private apiUrl = environment.PUBLIC_BACKEND_URL + '/api/tickets';
   private product_amounts: ProductAmount[] = [];
   orderAdded = new EventEmitter<void>();
 
